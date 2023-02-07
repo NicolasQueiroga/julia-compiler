@@ -1,9 +1,9 @@
-// make a simple compiler that receives a expression string only with + and - and returns the result. it can have spaces between the operators and operands.
-
 #include <iostream>
 #include <algorithm>
 #include <string>
 #include <vector>
+
+// #define DEBUG
 
 using std::cout;
 
@@ -37,8 +37,10 @@ int main(int argc, char **argv)
     tokens.push_back(token);
     tokens[tokens.size() - 1] == "" ? tokens.pop_back() : void();
 
+#ifdef DEBUG
     for (std::string s : tokens)
         cout << s << "\n";
+#endif
 
     int result = 0;
     bool isNegative = false;
