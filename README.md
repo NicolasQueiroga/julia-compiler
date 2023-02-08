@@ -13,6 +13,8 @@
 ├── CMakeLists.txt
 ├── bin
 ├── build
+├── include
+├── lib
 └── src
 ```
 ### Estrutura de pastas
@@ -21,7 +23,7 @@
   - A pasta `src` conterá o arquivo fonte do projeto (`main.cpp`).
   - A pasta `build` conterá os arquivos gerados pelo `cmake`.
   - A pasta `bin` conterá o executável do projeto.
-  - A pasta `libs` conterá as bibliotecas necessárias para o projeto.
+  - A pasta `lib` conterá as bibliotecas necessárias para o projeto.
   - A pasta `include` conterá os arquivos de cabeçalho necessários para o projeto.
   
 
