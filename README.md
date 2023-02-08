@@ -10,11 +10,10 @@
 ```
 .
 ├── README.md
-└── roteiro0
-    ├── CMakeLists.txt
-    ├── bin
-    ├── build
-    └── src
+├── CMakeLists.txt
+├── bin
+├── build
+└── src
 ```
 ### Estrutura de pastas
 - Os roteiros serão desenvolvidos em pastas com o nome do roteiro, por exemplo, o roteiro 0 será desenvolvido na pasta `roteiro0`, contendo os seguintes arquivos e pastas:
