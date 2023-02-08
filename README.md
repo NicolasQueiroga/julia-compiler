@@ -5,7 +5,7 @@
 ---
 
 # Instruções de execução
-
+### Estrutura de pastas
 
 ```
 .
@@ -17,7 +17,7 @@
 ├── lib
 └── src
 ```
-### Estrutura de pastas
+
 - Os roteiros serão desenvolvidos em pastas com o nome do roteiro, por exemplo, o roteiro 0 será desenvolvido na pasta `roteiro0`, contendo os seguintes arquivos e pastas:
   - O arquívo `CMakeLists.txt` contém as instruções de *compilação* do projeto.
   - A pasta `src` conterá o arquivo fonte do projeto (`main.cpp`).
@@ -30,14 +30,27 @@
 ### Passos para executar o projeto
 
 - Para executar o projeto, é necessário ter o `cmake` instalado.
-  - Para macOS, basta executar o comando `brew install cmake`.
-  - Para Linux, basta executar o comando `sudo apt install cmake`.
+  - Para macOS, basta executar o seguinte comando:
+  ```bash
+  brew install cmake
+  ```
+  - Para Linux, basta executar o seguinte comando 
+  ```bash
+  sudo apt install cmake
+  ```
 
 - Dentro do diretorio do projeto `roteiroX`, basta seguir os seguintes passos:
-  - `mkdir build`
-  - `cd build`
-  - `cmake ..`
-  - `make`
-  - `../bin/main`
+```bash
+mkdir build
+cd build
+cmake ..
+make
+../bin/main
+```
   
-
+- Para remover os feedbacks que tanto o comando `cmake` quanto o comando `make` geram, basta executa-los do seguinte jeito:
+```bash
+cmake .. > /dev/null
+make .. > /dev/null
+../bin/main
+```
