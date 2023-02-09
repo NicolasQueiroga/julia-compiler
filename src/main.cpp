@@ -15,7 +15,6 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    
     std::string token;
     std::vector<std::string> tokens;
     std::string expression = argv[1];
@@ -48,16 +47,16 @@ int main(int argc, char **argv)
     {
         if (i % 2 == 0 && (tokens[i] == "+" || tokens[i] == "-"))
         {
-            cout << "Invalid expression\n";
+            std::stoi("+");
             return 1;
         }
         if (i % 2 == 1 && (tokens[i] != "+" && tokens[i] != "-"))
         {
-            cout << "Invalid expression\n";
+            std::stoi("+");
             return 1;
         }
-        if (i % 2 != 0)
-            isNegative = tokens[i] == "-" ? true : false;
+        if (i % 2 != 0 && i < tokens.size() - 1)
+            isNegative = tokens[i] == "-" ? true : false;            
         else
         {
             if (isNegative)
