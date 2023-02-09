@@ -44,7 +44,7 @@ int main(int argc, char **argv)
 
     int result = 0;
     bool isNegative = false;
-    for (int i = 0; i < tokens.size(); i++)
+    for (size_t i = 0; i < tokens.size(); i++)
     {
         if (i % 2 == 0 && (tokens[i] == "+" || tokens[i] == "-"))
         {
