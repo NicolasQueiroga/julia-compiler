@@ -18,7 +18,7 @@
 └── src
 ```
 
-- Os roteiros serão desenvolvidos em pastas com o nome do roteiro, por exemplo, o roteiro 0 será desenvolvido na pasta `roteiro0`, contendo os seguintes arquivos e pastas:
+- Os roteiros serão desenvolvidos na raiz do repositório, contendo os seguintes arquivos e pastas:
   - O arquívo `CMakeLists.txt` contém as instruções de *compilação* do projeto.
   - A pasta `src` conterá o arquivo fonte do projeto (`main.cpp`).
   - A pasta `build` conterá os arquivos gerados pelo `cmake`.
