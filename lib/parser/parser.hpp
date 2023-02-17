@@ -4,10 +4,9 @@
 
 class Parser
 {
-private:
+public:
     static Tokenizer tokenizer;
 
-public:
     Parser();
     static void parseExpression();
     static void run(std::string code);

@@ -5,12 +5,11 @@
 
 class Tokenizer
 {
-private:
+public:
     std::string source;
     int position;
     Token next;
 
-public:
-    Tokenizer();
+    Tokenizer(std::string source, int position);
     void selectNext();
 };

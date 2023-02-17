@@ -3,7 +3,9 @@
 
 class Token
 {
-protected:
+public:
     std::string type;
     int value;
+
+    Token(std::string type, int value);
 };
