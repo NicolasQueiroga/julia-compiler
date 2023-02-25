@@ -1,5 +1,4 @@
 #pragma once
-
 #include "tokenizer/tokenizer.hpp"
 
 class Parser
@@ -7,7 +6,6 @@ class Parser
 public:
     static Tokenizer tokenizer;
 
-    Parser();
-    static void parseExpression();
-    static void run(std::string code);
+    static int parseExpression();
+    static int run(std::string code);
 };
