@@ -1,16 +1,17 @@
 #pragma once
-
 #include <string>
+#include <vector>
 #include "token/token.hpp"
 
 class Tokenizer
 {
-private:
+public:
     std::string source;
     int position;
     Token next;
+    std::vector<std::string> tokens;
 
-public:
     Tokenizer();
+    void fetchTokens();
     void selectNext();
 };
