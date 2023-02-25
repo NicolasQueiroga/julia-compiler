@@ -1,10 +1,8 @@
 #include <iostream>
-#include <vector>
-#include "tokenizer/tokenizer.hpp"
+#include "parser/parser.hpp"
 
 int main(int argc, char **argv)
 {
-    Tokenizer tokenizer("1 + 2", 0);
-    tokenizer.selectNext();
+    std::cout << Parser::run("1-2") << '\n';
     return 0;
 }
