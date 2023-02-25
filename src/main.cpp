@@ -3,6 +3,7 @@
 
 int main(int argc, char **argv)
 {
-    std::cout << Parser::run("1-2") << '\n';
+    if (argc > 1)
+        std::cout << Parser::run(argv[1]) << '\n';
     return 0;
 }
