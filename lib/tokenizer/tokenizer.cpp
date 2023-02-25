@@ -1,49 +1,34 @@
-#include <vector>
-#include <ctype.h>
-#include <iostream>
+#include <regex>
 #include "tokenizer.hpp"
 
-Tokenizer::Tokenizer(std::string source, int position)
+Tokenizer::Tokenizer() : next("EOF", 0)
 {
-    this->source = source + "_";
-    this->position = position;
+}
+
+void Tokenizer::fetchTokens()
+{
+    std::smatch m;
+    std::regex e("[(\\d+|\\+|\\-)]");
+
+    while (std::regex_search(this->source, m, e))
+    {
+        this->tokens.push_back(m[0]);
+        this->source = m.suffix();
+    }
+    this->tokens.push_back("_");
 }
 
 void Tokenizer::selectNext()
 {
-    std::vector<std::string> tokens;
-    std::string token;
-    
-    for (char c : this->source)
-    {
-        if (c == ' ' || c == '+' || c == '-')
-        {
-            if (!token.empty())
-            {
-                tokens.push_back(token);
-                token.clear();
-            }
-            if (c == '+')
-            {
-                tokens.push_back("+");
-                this->next.type = "PLUS";
-            }
-            else if (c == '-')
-            {
-                tokens.push_back("-");
-                this->next.type = "MINUS";
-            }
-            else if (c == '_')
-            {
-                this->next.type = "EOF";
-                break;
-            }
-        }
-        else if (isdigit(c))
-            token += c;
-    }
-    std::cout << "Tokens: ";
-    for (std::string token : tokens)
-        std::cout << token << " ";
-    std::cout << '\n';
+    if (tokens[this->position] == "+")
+        this->next.type = "PLUS";
+    else if (tokens[this->position] == "-")
+        this->next.type = "MINUS";
+    else if (tokens[this->position] == "_")
+        this->next.type = "EOF";
+    else
+        this->next.type = "NUMBER";
+
+    this->next.type == "NUMBER" ? this->next.value = std::stoi(tokens[this->position]) : int();
+    this->position++;
 }
