@@ -9,6 +9,8 @@ int Parser::parseExpression()
     {
         result = tokenizer.next.value;
         tokenizer.selectNext();
+        if (tokenizer.next.type == "NUMBER")
+            throw "Expected PLUS or MINUS";
         while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS")
         {
             if (tokenizer.next.type == "PLUS")
@@ -28,12 +30,13 @@ int Parser::parseExpression()
                     throw "Expected NUMBER";
             }
             tokenizer.selectNext();
+            if (tokenizer.next.type == "NUMBER")
+                throw "Expected PLUS or MINUS";
         }
-        return result;
     }
     else
         throw "Expected NUMBER";
-    return 0;
+    return result;
 }
 
 int Parser::run(std::string code)
