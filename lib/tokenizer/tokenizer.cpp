@@ -8,7 +8,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[(\\d+|\\+|\\-)]");
+    std::regex e("[0-9]+|[+-]");
 
     while (std::regex_search(this->source, m, e))
     {
