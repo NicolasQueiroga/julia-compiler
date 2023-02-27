@@ -8,7 +8,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|[+-]");
+    std::regex e("[0-9]+|[\\+\\-\\/\\*]");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -24,6 +24,10 @@ void Tokenizer::selectNext()
         this->next.type = "PLUS";
     else if (tokens[this->position] == "-")
         this->next.type = "MINUS";
+    else if (tokens[this->position] == "*")
+        this->next.type = "MULT";
+    else if (tokens[this->position] == "/")
+        this->next.type = "DIV";
     else if (tokens[this->position] == "_")
         this->next.type = "EOF";
     else
