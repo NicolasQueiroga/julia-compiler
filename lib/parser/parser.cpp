@@ -1,6 +1,5 @@
 #include "parser.hpp"
 #include "prepro/prepro.hpp"
-#include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
@@ -65,7 +64,6 @@ int Parser::parseExpression()
 int Parser::run(std::string code)
 {
     Prepro::filter(code);
-    std::cout << '\n' << code << std::endl;
     tokenizer.source = code;
     tokenizer.position = 0;
     tokenizer.fetchTokens();
