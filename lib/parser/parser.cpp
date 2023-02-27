@@ -67,6 +67,6 @@ int Parser::run(std::string code)
     tokenizer.source = code;
     tokenizer.position = 0;
     tokenizer.fetchTokens();
-    tokenizer.selectNext();
+    tokenizer.next.type != "EOF" ? tokenizer.selectNext() : void(throw "Expected NUMBER");
     return parseExpression();
 }
