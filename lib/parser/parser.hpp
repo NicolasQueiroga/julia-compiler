@@ -7,5 +7,6 @@ public:
     static Tokenizer tokenizer;
 
     static int parseExpression();
+    static int parseTerm();
     static int run(std::string code);
 };
