@@ -11,11 +11,14 @@ add_executable(main src/main.cpp)
 add_library(parser SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lib/parser/parser.cpp)
 add_library(token SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lib/token/token.cpp)
 add_library(tokenizer SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lib/tokenizer/tokenizer.cpp)
+add_library(prepro SHARED ${CMAKE_CURRENT_SOURCE_DIR}/lib/prepro/prepro.cpp)
+
 
 target_include_directories(parser PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 target_include_directories(token PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 target_include_directories(tokenizer PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
+target_include_directories(prepro PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
 target_link_libraries(tokenizer PUBLIC token)
-target_link_libraries(parser PUBLIC tokenizer)
+target_link_libraries(parser PUBLIC tokenizer prepro)
 target_link_libraries(main PUBLIC parser)
