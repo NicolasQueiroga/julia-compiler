@@ -3,6 +3,10 @@
 ![git status](http://3.129.230.99/svg/NicolasQueiroga/my-logcomp)
 
 ---
+# Diagrama
+
+![](/img/diagramaSintatico.drawio.png)
+---
 
 # Instruções de execução
 ### Estrutura de pastas
