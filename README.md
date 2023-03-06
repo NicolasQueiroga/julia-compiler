@@ -55,6 +55,6 @@ make
 - Para remover os feedbacks que tanto o comando `cmake` quanto o comando `make` geram, basta executa-los do seguinte jeito:
 ```bash
 cmake .. > /dev/null
-make .. > /dev/null
+make > /dev/null
 ../bin/main "1+1+2"
 ```
