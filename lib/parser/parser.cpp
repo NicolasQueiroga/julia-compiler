@@ -1,63 +1,60 @@
 #include "parser.hpp"
 #include "prepro/prepro.hpp"
+#include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
-int Parser::parseTerm()
+int Parser::parseFactor()
 {
-    int result = 0;
+    tokenizer.selectNext();
     if (tokenizer.next.type == "NUMBER")
     {
-        result = tokenizer.next.value;
+        int ret = tokenizer.next.value;
         tokenizer.selectNext();
-        if (tokenizer.next.type == "NUMBER")
-            throw "Expected MULT or DIV";
-        while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV")
+        return ret;
+    }
+    else if (tokenizer.next.type == "MINUS")
+        return -parseFactor();
+    else if (tokenizer.next.type == "PLUS")
+        return parseFactor();
+    else if (tokenizer.next.type == "LPAREN")
+    {
+        int result = parseExpression();
+        if (tokenizer.next.type == "RPAREN")
         {
-            if (tokenizer.next.type == "MULT")
-            {
-                tokenizer.selectNext();
-                if (tokenizer.next.type == "NUMBER")
-                    result *= tokenizer.next.value;
-                else
-                    throw "Expected NUMBER";
-            }
-            else if (tokenizer.next.type == "DIV")
-            {
-                tokenizer.selectNext();
-                if (tokenizer.next.type == "NUMBER")
-                    result /= tokenizer.next.value;
-                else
-                    throw "Expected NUMBER";
-            }
             tokenizer.selectNext();
-            if (tokenizer.next.type == "NUMBER")
-                throw "Expected MULT or DIV";
+            return result;
         }
+        else
+            throw "Expected RPAREN";
     }
     else
         throw "Expected NUMBER";
-    return result;
+}
+
+int Parser::parseTerm()
+{
+    int expResult = Parser::parseFactor();
+    while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV")
+    {
+        if (tokenizer.next.type == "MULT")
+            expResult *= Parser::parseFactor();
+        else if (tokenizer.next.type == "DIV")
+            expResult /= Parser::parseFactor();
+    }
+    return expResult;
 }
 
 int Parser::parseExpression()
 {
-    int expResult = 0;
-    expResult = Parser::parseTerm();
+    int expResult = Parser::parseTerm();
     while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS")
     {
         if (tokenizer.next.type == "PLUS")
-        {
-            tokenizer.selectNext();
             expResult += Parser::parseTerm();
-        }
         else if (tokenizer.next.type == "MINUS")
-        {
-            tokenizer.selectNext();
             expResult -= Parser::parseTerm();
-        }
     }
-
     return expResult;
 }
 
@@ -67,6 +64,9 @@ int Parser::run(std::string code)
     tokenizer.source = code;
     tokenizer.position = 0;
     tokenizer.fetchTokens();
-    tokenizer.next.type != "EOF" ? tokenizer.selectNext() : void(throw "Expected NUMBER");
-    return parseExpression();
+
+    int res = parseExpression();
+    if (tokenizer.next.type != "EOF")
+        throw "Expected EOF";
+    return res;
 }
