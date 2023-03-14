@@ -1,61 +1,114 @@
 #include "parser.hpp"
 #include "prepro/prepro.hpp"
+#include "binop/binop.hpp"
+#include "intval/intval.hpp"
+#include "noop/noop.hpp"
+#include "unop/unop.hpp"
+#include <memory>
+#include <vector>
 #include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
-int Parser::parseFactor()
+Node *Parser::parseFactor()
 {
+    std::vector<Node *> children(1);
+    children.reserve(1);
+    Node *node = nullptr;
+
     tokenizer.selectNext();
     if (tokenizer.next.type == "NUMBER")
     {
-        int ret = tokenizer.next.value;
+        node = new IntVal(children, tokenizer.next.value);
         tokenizer.selectNext();
-        return ret;
+        return node;
     }
     else if (tokenizer.next.type == "MINUS")
-        return -parseFactor();
+    {
+        children[0] = parseFactor();
+        node = new UnOp(children, "-");
+        return node;
+    }
     else if (tokenizer.next.type == "PLUS")
-        return parseFactor();
+    {
+        children[0] = parseFactor();
+        node = new UnOp(children, "+");
+        return node;
+    }
     else if (tokenizer.next.type == "LPAREN")
     {
-        int result = parseExpression();
+        node = parseExpression();
         if (tokenizer.next.type == "RPAREN")
         {
             tokenizer.selectNext();
-            return result;
+            return node;
         }
         else
+        {
+            delete node;
+            for (auto child : children)
+                delete child;
+
             throw "Expected RPAREN";
+        }
     }
     else
+    {
+        for (auto child : children)
+            delete child;
         throw "Expected NUMBER";
+    }
+
+    for (auto child : children)
+        delete child;
 }
 
-int Parser::parseTerm()
+Node *Parser::parseTerm()
 {
-    int expResult = Parser::parseFactor();
+    Node *node = Parser::parseFactor();
+    std::vector<Node *> children(2);
+    children.reserve(2);
+
     while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV")
     {
         if (tokenizer.next.type == "MULT")
-            expResult *= Parser::parseFactor();
+        {
+            children[0] = node;
+            children[1] = Parser::parseFactor();
+            node = new BinOp(children, "*");
+        }
         else if (tokenizer.next.type == "DIV")
-            expResult /= Parser::parseFactor();
+        {
+            children[0] = node;
+            children[1] = Parser::parseFactor();
+            node = new BinOp(children, "/");
+        }
     }
-    return expResult;
+    return node;
 }
 
-int Parser::parseExpression()
+Node *Parser::parseExpression()
 {
-    int expResult = Parser::parseTerm();
+    Node *node = Parser::parseTerm();
+    std::vector<Node *> children(2);
+    children.reserve(2);
+
     while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS")
     {
         if (tokenizer.next.type == "PLUS")
-            expResult += Parser::parseTerm();
+        {
+            children[0] = node;
+            children[1] = Parser::parseTerm();
+            node = new BinOp(children, "+");
+        }
         else if (tokenizer.next.type == "MINUS")
-            expResult -= Parser::parseTerm();
+        {
+            children[0] = node;
+            children[1] = Parser::parseTerm();
+            node = new BinOp(children, "-");
+        }
     }
-    return expResult;
+    return node;
 }
 
 int Parser::run(std::string code)
@@ -65,8 +118,10 @@ int Parser::run(std::string code)
     tokenizer.position = 0;
     tokenizer.fetchTokens();
 
-    int res = parseExpression();
-    if (tokenizer.next.type != "EOF")
-        throw "Expected EOF";
-    return res;
+    Node *tree = parseExpression();
+    int result = tree->Evaluate();
+    delete tree;
+    // if (tokenizer.next.type != "EOF")
+    //     throw "Expected EOF";
+    return result;
 }
