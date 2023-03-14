@@ -84,6 +84,10 @@ Node *Parser::parseTerm()
             node = new BinOp(children, "/");
         }
     }
+    // hadle exception if NUMBER
+    if (tokenizer.next.type == "NUMBER")
+        throw "Expected EOF";
+
     return node;
 }
 
@@ -108,6 +112,9 @@ Node *Parser::parseExpression()
             node = new BinOp(children, "-");
         }
     }
+    // if NUMBER throw "Expected EOF"
+    if (tokenizer.next.type == "NUMBER")
+        throw "Expected EOF";
     return node;
 }
 
@@ -119,9 +126,11 @@ int Parser::run(std::string code)
     tokenizer.fetchTokens();
 
     Node *tree = parseExpression();
+    if (tokenizer.next.type != "EOF")
+        throw "Expected EOF";
+
+
     int result = tree->Evaluate();
     delete tree;
-    // if (tokenizer.next.type != "EOF")
-    //     throw "Expected EOF";
     return result;
 }
