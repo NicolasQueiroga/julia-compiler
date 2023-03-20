@@ -5,7 +5,4 @@ void Prepro::filter(std::string &code)
 {
     std::regex e("#.*");
     code = std::regex_replace(code, e, "");
-
-    e = "\n";
-    code = std::regex_replace(code, e, "");
 }
