@@ -84,7 +84,6 @@ Node *Parser::parseTerm()
             node = new BinOp(children, "/");
         }
     }
-    // hadle exception if NUMBER
     if (tokenizer.next.type == "NUMBER")
         throw "Expected EOF";
 

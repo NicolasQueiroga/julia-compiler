@@ -10,6 +10,5 @@ private:
 
 public:
     UnOp(std::vector<Node *> children, std::variant<int, std::string> value);
-    ~UnOp() override;
     int Evaluate() override;
 };

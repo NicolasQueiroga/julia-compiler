@@ -10,6 +10,5 @@ private:
 
 public:
     IntVal(std::vector<Node *> children, std::variant<int, std::string> value);
-    ~IntVal() override;
     int Evaluate() override;
 };

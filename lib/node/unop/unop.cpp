@@ -5,14 +5,6 @@ UnOp::UnOp(std::vector<Node *> children, std::variant<int, std::string> value)
 {
 }
 
-UnOp::~UnOp()
-{
-    // for (Node *child : this->children)
-    //     delete child;
-    
-    // this->children.clear();
-}
-
 int UnOp::Evaluate()
 {
     if (std::holds_alternative<std::string>(value))

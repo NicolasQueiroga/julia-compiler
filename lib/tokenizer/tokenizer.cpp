@@ -1,14 +1,17 @@
 #include <regex>
 #include "tokenizer.hpp"
+#include <iostream>
 
 Tokenizer::Tokenizer() : next("EOF", 0)
 {
+    this->reservedWords = std::make_shared<std::vector<std::string>>();
+    this->reservedWords->push_back("println");
 }
 
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|[\\+\\-\\/\\*\\(\\)]");
+    std::regex e("[0-9]+|[a-zA-Z]+|[\\+\\-\\/\\*\\(\\)\\=\\\n]");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -34,8 +37,15 @@ void Tokenizer::selectNext()
         this->next.type = "RPAREN";
     else if (tokens[this->position] == "_")
         this->next.type = "EOF";
-    else
+    else if (tokens[this->position] == "0" || tokens[this->position] == "1" || tokens[this->position] == "2" || tokens[this->position] == "3" || tokens[this->position] == "4" || tokens[this->position] == "5" || tokens[this->position] == "6" || tokens[this->position] == "7" || tokens[this->position] == "8" || tokens[this->position] == "9")
         this->next.type = "NUMBER";
+    else
+        if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
+            this->next.type = "RESERVED";
+
+    
+    // cout next token
+    std::cout << "next token: " << this->next.type << this->next.value << std::endl;
 
     this->next.type == "NUMBER" ? this->next.value = std::stoi(tokens[this->position]) : int();
     this->position++;
