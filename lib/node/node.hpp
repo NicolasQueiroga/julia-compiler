@@ -4,10 +4,11 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <iostream>
 
 class Node
 {
-protected:
+public:
     std::variant<int, std::string> value;
     std::vector<Node *> children;
 

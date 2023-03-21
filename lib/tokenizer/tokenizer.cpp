@@ -1,5 +1,6 @@
 #include <regex>
 #include "tokenizer.hpp"
+#include "utils.hpp"
 #include <iostream>
 
 Tokenizer::Tokenizer() : next("EOF", 0)
@@ -23,7 +24,17 @@ void Tokenizer::fetchTokens()
 
 void Tokenizer::selectNext()
 {
-    if (tokens[this->position] == "+")
+    bool is_number = true;
+    for (char c : tokens[this->position])
+        if (!isdigit(c))
+            is_number = false;
+
+    if (is_number)
+    {
+        this->next.type = "NUMBER";
+        this->next.value = std::stoi(tokens[this->position]);
+    }
+    else if (tokens[this->position] == "+")
         this->next.type = "PLUS";
     else if (tokens[this->position] == "-")
         this->next.type = "MINUS";
@@ -37,16 +48,20 @@ void Tokenizer::selectNext()
         this->next.type = "RPAREN";
     else if (tokens[this->position] == "_")
         this->next.type = "EOF";
-    else if (tokens[this->position] == "0" || tokens[this->position] == "1" || tokens[this->position] == "2" || tokens[this->position] == "3" || tokens[this->position] == "4" || tokens[this->position] == "5" || tokens[this->position] == "6" || tokens[this->position] == "7" || tokens[this->position] == "8" || tokens[this->position] == "9")
-        this->next.type = "NUMBER";
+    else if (tokens[this->position] == "=")
+        this->next.type = "ASSIGN";
+    else if (tokens[this->position] == "\n")
+        this->next.type = "NEWLINE";
+    else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
+        this->next.type = "RESERVED";
     else
-        if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
-            this->next.type = "RESERVED";
+    {
+        this->next.type = "IDENTIFIER";
+        this->next.value = tokens[this->position];
+    }
 
-    
-    // cout next token
-    std::cout << "next token: " << this->next.type << this->next.value << std::endl;
+    // cout all next info
+    //std::cout << "Tokenizer: Next: " << this->next.type << " " << this->next.value << " " << tokens[this->position] << '\n';
 
-    this->next.type == "NUMBER" ? this->next.value = std::stoi(tokens[this->position]) : int();
     this->position++;
 }

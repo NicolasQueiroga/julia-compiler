@@ -2,12 +2,12 @@
 
 #include "node.hpp"
 
-class Print : public Node
+class Block : public Node
 {
 private:
     std::vector<Node *> children;
 
 public:
-    Print(std::vector<Node *> children);
+    Block(std::vector<Node *> children);
     int Evaluate() override;
 };

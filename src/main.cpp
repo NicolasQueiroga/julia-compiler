@@ -28,6 +28,7 @@ int main(int argc, char **argv)
     }
 #endif
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
-    std::cout << Parser::run(file_contents) << '\n';
+    Node *tree = Parser::run(file_contents);
+    tree->Evaluate();
     return 0;
 }
