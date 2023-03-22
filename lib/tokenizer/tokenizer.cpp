@@ -10,7 +10,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[a-zA-Z_][a-zA-Z0-9_]*|[-+*/()=]|[0-9]+|\\n");
+    std::regex e("[a-zA-Z_][a-zA-Z0-9_]*|[-+*/()={}\\[\\],.<>!?:;@#$%^&*_~`\\|]+|[0-9]+|\\n");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -52,9 +52,14 @@ void Tokenizer::selectNext()
         this->next.type = "NEWLINE";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
         this->next.type = "RESERVED";
-    else
+    else if (std::regex_match(tokens[this->position], std::regex("[a-zA-Z0-9_]+")))
     {
         this->next.type = "IDENTIFIER";
+        this->next.value = tokens[this->position];
+    }
+    else
+    {
+        this->next.type = "UNKNOWN";
         this->next.value = tokens[this->position];
     }
 
