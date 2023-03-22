@@ -10,14 +10,14 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|[a-zA-Z]+|[\\+\\-\\/\\*\\(\\)\\=\\\n]");
+    std::regex e("[a-zA-Z_][a-zA-Z0-9_]*|[-+*/()=]|[0-9]+|\\n");
 
     while (std::regex_search(this->source, m, e))
     {
         this->tokens.push_back(m[0]);
         this->source = m.suffix();
     }
-    this->tokens.push_back("_");
+    this->tokens.push_back("~");
 }
 
 void Tokenizer::selectNext()
@@ -44,7 +44,7 @@ void Tokenizer::selectNext()
         this->next.type = "LPAREN";
     else if (tokens[this->position] == ")")
         this->next.type = "RPAREN";
-    else if (tokens[this->position] == "_")
+    else if (tokens[this->position] == "~")
         this->next.type = "EOF";
     else if (tokens[this->position] == "=")
         this->next.type = "ASSIGN";
