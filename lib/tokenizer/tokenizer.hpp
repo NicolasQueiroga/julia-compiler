@@ -10,6 +10,7 @@ public:
     int position;
     Token next;
     std::vector<std::string> tokens;
+    std::shared_ptr<std::vector<std::string>> reservedWords;
 
     Tokenizer();
     void fetchTokens();

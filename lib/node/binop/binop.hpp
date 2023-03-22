@@ -10,6 +10,5 @@ private:
 
 public:
     BinOp(std::vector<Node *> children, std::variant<int, std::string> value);
-    ~BinOp() override;
     int Evaluate() override;
 };

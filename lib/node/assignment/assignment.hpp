@@ -1,14 +1,15 @@
 #pragma once
 
 #include "node.hpp"
+#include "symboltable.hpp"
 
-class UnOp : public Node
+class Assignment : public Node, public SymbolTable
 {
 private:
     std::vector<Node *> children;
     std::variant<int, std::string> value;
 
 public:
-    UnOp(std::vector<Node *> children, std::variant<int, std::string> value);
+    Assignment(std::vector<Node *> children, std::variant<int, std::string> value);
     int Evaluate() override;
 };

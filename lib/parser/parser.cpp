@@ -4,9 +4,13 @@
 #include "intval/intval.hpp"
 #include "noop/noop.hpp"
 #include "unop/unop.hpp"
+#include "block/block.hpp"
+#include "print/print.hpp"
+#include "assignment/assignment.hpp"
+#include "identifier/identifier.hpp"
+
 #include <memory>
 #include <vector>
-#include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
@@ -23,17 +27,21 @@ Node *Parser::parseFactor()
         tokenizer.selectNext();
         return node;
     }
+    else if (tokenizer.next.type == "IDENTIFIER")
+    {
+        node = new Identifier(tokenizer.next.value);
+        tokenizer.selectNext();
+        return node;
+    }
     else if (tokenizer.next.type == "MINUS")
     {
         children[0] = parseFactor();
-        node = new UnOp(children, "-");
-        return node;
+        return new UnOp(children, "-");
     }
     else if (tokenizer.next.type == "PLUS")
     {
         children[0] = parseFactor();
-        node = new UnOp(children, "+");
-        return node;
+        return new UnOp(children, "+");
     }
     else if (tokenizer.next.type == "LPAREN")
     {
@@ -84,7 +92,6 @@ Node *Parser::parseTerm()
             node = new BinOp(children, "/");
         }
     }
-    // hadle exception if NUMBER
     if (tokenizer.next.type == "NUMBER")
         throw "Expected EOF";
 
@@ -112,25 +119,66 @@ Node *Parser::parseExpression()
             node = new BinOp(children, "-");
         }
     }
-    // if NUMBER throw "Expected EOF"
     if (tokenizer.next.type == "NUMBER")
         throw "Expected EOF";
     return node;
 }
 
-int Parser::run(std::string code)
+Node *Parser::parseStatement()
+{
+    std::vector<Node *> children(2);
+    children.reserve(2);
+    Node *node = nullptr;
+    if (tokenizer.next.type == "RESERVED")
+    {
+        tokenizer.selectNext();
+        if (tokenizer.next.type == "LPAREN")
+        {
+            children[0] = parseExpression();
+            if (tokenizer.next.type == "RPAREN")
+                return new Print(children);
+            else
+                throw "Expected RPAREN";
+        }
+        else
+            throw "Expected LPAREN";
+    }
+    else if (tokenizer.next.type == "IDENTIFIER")
+    {
+        node = new Identifier(tokenizer.next.value);
+        std::string identifier = std::get<std::string>(tokenizer.next.value);
+        tokenizer.selectNext();
+        if (tokenizer.next.type == "ASSIGN")
+        {
+            children[0] = node;
+            children[1] = parseExpression();
+            return new Assignment(children, identifier);
+        }
+        else
+            throw "Expected ASSIGN";
+    }
+    else
+        throw "Expected PRINT or IDENTIFIER";
+}
+
+Node *Parser::parseBlock()
+{
+    std::vector<Node *> children;
+    tokenizer.selectNext();
+    while (tokenizer.next.type != "EOF")
+    {
+        children.push_back(parseStatement());
+        tokenizer.selectNext();
+    }
+
+    return new Block(children);
+}
+
+Node *Parser::run(std::string code)
 {
     Prepro::filter(code);
     tokenizer.source = code;
     tokenizer.position = 0;
     tokenizer.fetchTokens();
-
-    Node *tree = parseExpression();
-    if (tokenizer.next.type != "EOF")
-        throw "Expected EOF";
-
-
-    int result = tree->Evaluate();
-    delete tree;
-    return result;
+    return parseBlock();
 }

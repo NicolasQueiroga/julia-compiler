@@ -5,14 +5,6 @@ BinOp::BinOp(std::vector<Node *> children, std::variant<int, std::string> value)
 {
 }
 
-BinOp::~BinOp()
-{
-    // for (Node *child : this->children)
-    //     delete child;
-
-    // this->children.clear();
-}
-
 int BinOp::Evaluate()
 {
     if (std::holds_alternative<std::string>(value))
