@@ -10,7 +10,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[a-zA-Z_][a-zA-Z0-9_]*|[-+*/()={}\\[\\],.<>!?:;@#$%^&*_~`\\|]+|[0-9]+|\\n");
+    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
 
     while (std::regex_search(this->source, m, e))
     {

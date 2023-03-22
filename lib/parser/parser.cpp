@@ -119,7 +119,7 @@ Node *Parser::parseExpression()
             node = new BinOp(children, "-");
         }
     }
-    if (tokenizer.next.type == "NUMBER")
+    if (tokenizer.next.type == "NUMBER" || tokenizer.next.type == "UNKNOWN")
         throw "Expected EOF";
     return node;
 }
@@ -160,6 +160,8 @@ Node *Parser::parseStatement()
         else
             throw "Expected ASSIGN";
     }
+    else
+        throw "Expected RESERVED or IDENTIFIER";
     return new NoOp();
 }
 
@@ -169,7 +171,6 @@ Node *Parser::parseBlock()
     tokenizer.selectNext();
     while (1)
     {
-        // if is not NEWLINE
         if (tokenizer.next.type != "NEWLINE" && tokenizer.next.type != "EOF")
             children.push_back(parseStatement());
         if (tokenizer.next.type == "EOF")
