@@ -136,7 +136,10 @@ Node *Parser::parseStatement()
         {
             children[0] = parseExpression();
             if (tokenizer.next.type == "RPAREN")
+            {
+                tokenizer.selectNext();
                 return new Print(children);
+            }
             else
                 throw "Expected RPAREN";
         }
@@ -157,17 +160,20 @@ Node *Parser::parseStatement()
         else
             throw "Expected ASSIGN";
     }
-    else
-        throw "Expected PRINT or IDENTIFIER";
+    return new NoOp();
 }
 
 Node *Parser::parseBlock()
 {
     std::vector<Node *> children;
     tokenizer.selectNext();
-    while (tokenizer.next.type != "EOF")
+    while (1)
     {
-        children.push_back(parseStatement());
+        // if is not NEWLINE
+        if (tokenizer.next.type != "NEWLINE" && tokenizer.next.type != "EOF")
+            children.push_back(parseStatement());
+        if (tokenizer.next.type == "EOF")
+            break;
         tokenizer.selectNext();
     }
 
