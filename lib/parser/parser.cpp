@@ -8,11 +8,9 @@
 #include "print/print.hpp"
 #include "assignment/assignment.hpp"
 #include "identifier/identifier.hpp"
-#include "utils.hpp"
 
 #include <memory>
 #include <vector>
-#include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
@@ -23,7 +21,6 @@ Node *Parser::parseFactor()
     Node *node = nullptr;
 
     tokenizer.selectNext();
-    //std::cout << "parseFactor: Next: " << tokenizer.next.type << " " << tokenizer.next.value << '\n';
     if (tokenizer.next.type == "NUMBER")
     {
         node = new IntVal(children, tokenizer.next.value);
@@ -39,14 +36,12 @@ Node *Parser::parseFactor()
     else if (tokenizer.next.type == "MINUS")
     {
         children[0] = parseFactor();
-        node = new UnOp(children, "-");
-        return node;
+        return new UnOp(children, "-");
     }
     else if (tokenizer.next.type == "PLUS")
     {
         children[0] = parseFactor();
-        node = new UnOp(children, "+");
-        return node;
+        return new UnOp(children, "+");
     }
     else if (tokenizer.next.type == "LPAREN")
     {
@@ -133,6 +128,7 @@ Node *Parser::parseStatement()
 {
     std::vector<Node *> children(2);
     children.reserve(2);
+    Node *node = nullptr;
     if (tokenizer.next.type == "RESERVED")
     {
         tokenizer.selectNext();
@@ -140,10 +136,7 @@ Node *Parser::parseStatement()
         {
             children[0] = parseExpression();
             if (tokenizer.next.type == "RPAREN")
-            {
-                Node *node = new Print(children);
-                return node;
-            }
+                return new Print(children);
             else
                 throw "Expected RPAREN";
         }
@@ -152,15 +145,14 @@ Node *Parser::parseStatement()
     }
     else if (tokenizer.next.type == "IDENTIFIER")
     {
-        Node *identifier = new Identifier(tokenizer.next.value);
+        node = new Identifier(tokenizer.next.value);
+        std::string identifier = std::get<std::string>(tokenizer.next.value);
         tokenizer.selectNext();
         if (tokenizer.next.type == "ASSIGN")
         {
-            children[0] = identifier;
+            children[0] = node;
             children[1] = parseExpression();
-            //std::cout << "parseStatement: Next: " << tokenizer.next.type << " " << tokenizer.next.value << '\n';
-            Node *node = new Assignment(children, tokenizer.next.value);
-            return node;
+            return new Assignment(children, identifier);
         }
         else
             throw "Expected ASSIGN";
@@ -177,11 +169,9 @@ Node *Parser::parseBlock()
     {
         children.push_back(parseStatement());
         tokenizer.selectNext();
-        // //std::cout << "parseBlock: Next: " << tokenizer.next.type << " " << tokenizer.next.value << '\n';
     }
 
-    Node *node = new Block(children);
-    return node;
+    return new Block(children);
 }
 
 Node *Parser::run(std::string code)

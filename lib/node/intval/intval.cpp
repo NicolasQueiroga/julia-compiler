@@ -9,4 +9,6 @@ int IntVal::Evaluate()
 {
     if (std::holds_alternative<int>(value))
         return std::get<int>(value);
+    else
+        throw "Expected int";
 }

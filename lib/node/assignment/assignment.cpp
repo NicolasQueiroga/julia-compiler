@@ -1,6 +1,4 @@
 #include "assignment.hpp"
-#include <iostream>
-#include <variant>
 
 Assignment::Assignment(std::vector<Node *> children, std::variant<int, std::string> value) : children(children), value(value)
 {
@@ -8,10 +6,9 @@ Assignment::Assignment(std::vector<Node *> children, std::variant<int, std::stri
 
 int Assignment::Evaluate()
 {
-    std::string name = std::get<std::string>(this->children[0]->value);
-    int val = this->children[1]->Evaluate();
-    std::cout << "Assigning " << val << " to " << (std::get<std::string>(this->children[0]->value)) << std::endl;
-    this->setter(name, val);
-    throw "Not implemented";
+    if (std::holds_alternative<std::string>(value))
+        this->setter(std::get<1>(value), children[1]->Evaluate());
+    else
+        throw "Expected string";
     return 0;
 }

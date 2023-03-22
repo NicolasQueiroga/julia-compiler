@@ -8,4 +8,6 @@ int Identifier::Evaluate()
 {
     if (std::holds_alternative<std::string>(value))
         return this->getter(std::get<std::string>(this->value));
+    else
+        throw "Expected string";
 }

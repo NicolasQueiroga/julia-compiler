@@ -1,7 +1,5 @@
 #include <regex>
 #include "tokenizer.hpp"
-#include "utils.hpp"
-#include <iostream>
 
 Tokenizer::Tokenizer() : next("EOF", 0)
 {
@@ -59,9 +57,6 @@ void Tokenizer::selectNext()
         this->next.type = "IDENTIFIER";
         this->next.value = tokens[this->position];
     }
-
-    // cout all next info
-    //std::cout << "Tokenizer: Next: " << this->next.type << " " << this->next.value << " " << tokens[this->position] << '\n';
 
     this->position++;
 }

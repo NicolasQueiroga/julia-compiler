@@ -1,19 +1,21 @@
 #include "symboltable.hpp"
+#include <iostream>
+
+std::shared_ptr<std::map<std::string, int>> SymbolTable::table = std::make_shared<std::map<std::string, int>>();
 
 SymbolTable::SymbolTable()
 {
-    this->table = std::make_shared<std::map<std::string, int>>();
 }
 
 int SymbolTable::getter(std::string key)
 {
-    return this->table->at(key);
+    return table->at(key);
 }
 
 void SymbolTable::setter(std::string key, int value)
 {
-    if (this->table->find(key) != this->table->end())
-        this->table->at(key) = value;
+    if (SymbolTable::table->find(key) == SymbolTable::table->end())
+        table->insert(std::pair<std::string, int>(key, value));
     else
-        this->table->insert(std::pair<std::string, int>(key, value));
+        table->at(key) = value;
 }

@@ -7,7 +7,7 @@
 class SymbolTable
 {
 protected:
-    std::shared_ptr<std::map<std::string, int>> table;
+    static std::shared_ptr<std::map<std::string, int>> table;
 
 public:
     SymbolTable();
