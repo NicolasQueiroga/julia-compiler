@@ -17,9 +17,18 @@ target_link_libraries(assignment PUBLIC symboltable)
 add_library(block ${CMAKE_CURRENT_SOURCE_DIR}/block/block.cpp)
 target_include_directories(block PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(identifier ${CMAKE_CURRENT_SOURCE_DIR}/identifier/identifier.cpp)
-target_include_directories(identifier PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
-target_link_libraries(identifier PUBLIC symboltable)
+add_library(if ${CMAKE_CURRENT_SOURCE_DIR}/if/if.cpp)
+target_include_directories(if PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_library(readline ${CMAKE_CURRENT_SOURCE_DIR}/readline/readline.cpp)
+target_include_directories(readline PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_library(while ${CMAKE_CURRENT_SOURCE_DIR}/while/while.cpp)
+target_include_directories(while PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(print ${CMAKE_CURRENT_SOURCE_DIR}/print/print.cpp)
 target_include_directories(print PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_library(identifier ${CMAKE_CURRENT_SOURCE_DIR}/identifier/identifier.cpp)
+target_include_directories(identifier PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
+target_link_libraries(identifier PUBLIC symboltable)

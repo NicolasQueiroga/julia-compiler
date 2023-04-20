@@ -1,16 +1,25 @@
+#define DEBUG
+
 #include <regex>
+#include <iostream>
 #include "tokenizer.hpp"
 
 Tokenizer::Tokenizer() : next("EOF", 0)
 {
     this->reservedWords = std::make_shared<std::vector<std::string>>();
     this->reservedWords->push_back("println");
+    this->reservedWords->push_back("readln");
+    this->reservedWords->push_back("while");
+    this->reservedWords->push_back("if");
+    this->reservedWords->push_back("else");
+    this->reservedWords->push_back("end");
 }
 
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
+    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(>=)|(<=)|(\\|\\|)|(&&)|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
+
 
     while (std::regex_search(this->source, m, e))
     {
@@ -18,6 +27,11 @@ void Tokenizer::fetchTokens()
         this->source = m.suffix();
     }
     this->tokens.push_back("~");
+
+#ifdef DEBUG
+    for (std::string token : this->tokens)
+        std::cout << token << std::endl;
+#endif
 }
 
 void Tokenizer::selectNext()
@@ -48,10 +62,28 @@ void Tokenizer::selectNext()
         this->next.type = "EOF";
     else if (tokens[this->position] == "=")
         this->next.type = "ASSIGN";
+    else if (tokens[this->position] == "==")
+        this->next.type = "EQUALS";
+    else if (tokens[this->position] == "!=")
+        this->next.type = "NOTEQUALS";
+    else if (tokens[this->position] == "!")
+        this->next.type = "NOT";
+    else if (tokens[this->position] == ">")
+        this->next.type = "GREATERTHAN";
+    else if (tokens[this->position] == "<")
+        this->next.type = "LESSTHAN";
+    else if (tokens[this->position] == ">=")
+        this->next.type = "GREATERTHANEQUALS";
+    else if (tokens[this->position] == "<=")
+        this->next.type = "LESSTHANEQUALS";
+    else if (tokens[this->position] == "&&")
+        this->next.type = "AND";
+    else if (tokens[this->position] == "||")
+        this->next.type = "OR";
     else if (tokens[this->position] == "\n")
         this->next.type = "NEWLINE";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
-        this->next.type = "RESERVED";
+        this->next.type = tokens[this->position];
     else if (std::regex_match(tokens[this->position], std::regex("[a-zA-Z0-9_]+")))
     {
         this->next.type = "IDENTIFIER";

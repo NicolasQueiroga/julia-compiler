@@ -8,6 +8,9 @@
 #include "print/print.hpp"
 #include "assignment/assignment.hpp"
 #include "identifier/identifier.hpp"
+#include "if/if.hpp"
+#include "while/while.hpp"
+#include "readline/readline.hpp"
 
 #include <memory>
 #include <vector>
@@ -43,9 +46,14 @@ Node *Parser::parseFactor()
         children[0] = parseFactor();
         return new UnOp(children, "+");
     }
+    else if (tokenizer.next.type == "NOT")
+    {
+        children[0] = parseFactor();
+        return new UnOp(children, "!");
+    }
     else if (tokenizer.next.type == "LPAREN")
     {
-        node = parseExpression();
+        node = parseRelExpr();
         if (tokenizer.next.type == "RPAREN")
         {
             tokenizer.selectNext();
@@ -77,7 +85,7 @@ Node *Parser::parseTerm()
     std::vector<Node *> children(2);
     children.reserve(2);
 
-    while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV")
+    while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV" || tokenizer.next.type == "AND")
     {
         if (tokenizer.next.type == "MULT")
         {
@@ -90,6 +98,12 @@ Node *Parser::parseTerm()
             children[0] = node;
             children[1] = Parser::parseFactor();
             node = new BinOp(children, "/");
+        }
+        else if (tokenizer.next.type == "AND")
+        {
+            children[0] = node;
+            children[1] = Parser::parseFactor();
+            node = new BinOp(children, "&&");
         }
     }
     if (tokenizer.next.type == "NUMBER")
@@ -104,7 +118,7 @@ Node *Parser::parseExpression()
     std::vector<Node *> children(2);
     children.reserve(2);
 
-    while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS")
+    while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS" || tokenizer.next.type == "OR")
     {
         if (tokenizer.next.type == "PLUS")
         {
@@ -118,6 +132,59 @@ Node *Parser::parseExpression()
             children[1] = Parser::parseTerm();
             node = new BinOp(children, "-");
         }
+        else if (tokenizer.next.type == "OR")
+        {
+            children[0] = node;
+            children[1] = Parser::parseTerm();
+            node = new BinOp(children, "||");
+        }
+    }
+    if (tokenizer.next.type == "NUMBER" || tokenizer.next.type == "UNKNOWN")
+        throw "Expected EOF";
+    return node;
+}
+
+Node *Parser::parseRelExpr()
+{
+    Node *node = Parser::parseExpression();
+    std::vector<Node *> children(2);
+    children.reserve(2);
+
+    if (tokenizer.next.type == "EQUALS")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, "==");
+    }
+    else if (tokenizer.next.type == "NOTEQUALS")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, "!=");
+    }
+    else if (tokenizer.next.type == "LESSTHAN")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, "<");
+    }
+    else if (tokenizer.next.type == "GREATERTHAN")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, ">");
+    }
+    else if (tokenizer.next.type == "LESSTHANEQUALS")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, "<=");
+    }
+    else if (tokenizer.next.type == "GREATERTHANEQUALS")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, ">=");
     }
     if (tokenizer.next.type == "NUMBER" || tokenizer.next.type == "UNKNOWN")
         throw "Expected EOF";
@@ -126,18 +193,17 @@ Node *Parser::parseExpression()
 
 Node *Parser::parseStatement()
 {
-    std::vector<Node *> children(2);
-    children.reserve(2);
+    std::vector<Node *> children(3);
+    children.reserve(3);
     Node *node = nullptr;
-    if (tokenizer.next.type == "RESERVED")
+    if (tokenizer.next.type == "println")
     {
         tokenizer.selectNext();
         if (tokenizer.next.type == "LPAREN")
         {
-            children[0] = parseExpression();
+            children[0] = parseRelExpr();
             if (tokenizer.next.type == "RPAREN")
             {
-                tokenizer.selectNext();
                 return new Print(children);
             }
             else
@@ -145,6 +211,37 @@ Node *Parser::parseStatement()
         }
         else
             throw "Expected LPAREN";
+    }
+    else if (tokenizer.next.type == "if")
+    {
+        children[0] = parseRelExpr();
+        if (tokenizer.next.type == "NEWLINE")
+        {
+            std::vector<Node *> ifBlocklockChildren;
+            tokenizer.selectNext();
+            while (tokenizer.next.type != "ELSE" || tokenizer.next.type != "END")
+            {
+                ifBlocklockChildren.push_back(parseStatement());
+                tokenizer.selectNext();
+            }
+            children[1] = new Block(ifBlocklockChildren);
+            if (tokenizer.next.type == "ELSE")
+            {
+                tokenizer.selectNext();
+                if (tokenizer.next.type == "NEWLINE")
+                {
+                    tokenizer.selectNext();
+                    std::vector<Node *> elseBlocklockChildren;
+                    while (tokenizer.next.type != "END")
+                    {
+                        elseBlocklockChildren.push_back(parseStatement());
+                        tokenizer.selectNext();
+                    }
+                    children[2] = new Block(elseBlocklockChildren);
+                }
+            }
+            return new If(children);
+        }
     }
     else if (tokenizer.next.type == "IDENTIFIER")
     {
@@ -154,27 +251,25 @@ Node *Parser::parseStatement()
         if (tokenizer.next.type == "ASSIGN")
         {
             children[0] = node;
-            children[1] = parseExpression();
+            children[1] = parseRelExpr();
             return new Assignment(children, identifier);
         }
         else
             throw "Expected ASSIGN";
     }
+    else if (tokenizer.next.type == "NEWLINE")
+        return new NoOp();
     else
-        throw "Expected RESERVED or IDENTIFIER";
-    return new NoOp();
+        throw "Expected RESERVED or IDENTIFIER or NEWLINE";
 }
 
 Node *Parser::parseBlock()
 {
     std::vector<Node *> children;
     tokenizer.selectNext();
-    while (1)
+    while (tokenizer.next.type != "EOF")
     {
-        if (tokenizer.next.type != "NEWLINE" && tokenizer.next.type != "EOF")
-            children.push_back(parseStatement());
-        if (tokenizer.next.type == "EOF")
-            break;
+        children.push_back(parseStatement());
         tokenizer.selectNext();
     }
 

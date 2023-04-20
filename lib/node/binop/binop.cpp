@@ -18,8 +18,24 @@ int BinOp::Evaluate()
             return children[0]->Evaluate() * children[1]->Evaluate();
         else if (std::get<std::string>(value) == "/")
             return children[0]->Evaluate() / children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "||")
+            return children[0]->Evaluate() || children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "&&")
+            return children[0]->Evaluate() && children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "<")
+            return children[0]->Evaluate() < children[1]->Evaluate();
+        else if (std::get<std::string>(value) == ">")
+            return children[0]->Evaluate() > children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "<=")
+            return children[0]->Evaluate() <= children[1]->Evaluate();
+        else if (std::get<std::string>(value) == ">=")
+            return children[0]->Evaluate() >= children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "==")
+            return children[0]->Evaluate() == children[1]->Evaluate();
+        else if (std::get<std::string>(value) == "!=")
+            return children[0]->Evaluate() != children[1]->Evaluate();
         else
-            throw "Expected PLUS or MINUS or MUL or DIV";
+            throw "Expected PLUS or MINUS or MUL or DIV or OR or AND";
     }
     else
         throw "Expected string";

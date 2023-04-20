@@ -10,6 +10,7 @@ public:
 
     static Node *parseBlock();
     static Node *parseStatement();
+    static Node *parseRelExpr();
     static Node *parseExpression();
     static Node *parseTerm();
     static Node *parseFactor();

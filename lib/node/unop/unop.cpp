@@ -14,6 +14,8 @@ int UnOp::Evaluate()
             return this->children[0]->Evaluate();
         else if (std::get<std::string>(value) == "-")
             return -this->children[0]->Evaluate();
+        else if (std::get<std::string>(value) == "!")
+            return !this->children[0]->Evaluate();
         else
             throw "Expected PLUS or MINUS";
     }
