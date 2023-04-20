@@ -8,7 +8,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 {
     this->reservedWords = std::make_shared<std::vector<std::string>>();
     this->reservedWords->push_back("println");
-    this->reservedWords->push_back("readln");
+    this->reservedWords->push_back("readline");
     this->reservedWords->push_back("while");
     this->reservedWords->push_back("if");
     this->reservedWords->push_back("else");

@@ -50,6 +50,17 @@ Node *Parser::parseFactor()
         children[0] = parseFactor();
         return new UnOp(children, "!");
     }
+    else if (tokenizer.next.type == "readline")
+    {
+        tokenizer.selectNext();
+        if (tokenizer.next.type != "LPAREN")
+            throw "Expected LPAREN";
+        tokenizer.selectNext();
+        if (tokenizer.next.type != "RPAREN")
+            throw "Expected RPAREN";
+        tokenizer.selectNext();
+        return new ReadLine();
+    }
     else if (tokenizer.next.type == "LPAREN")
     {
         node = parseRelExpr();
