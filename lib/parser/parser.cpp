@@ -195,6 +195,7 @@ Node *Parser::parseStatement()
 {
     std::vector<Node *> children(3);
     children.reserve(3);
+    children[2] = nullptr;
     Node *node = nullptr;
     if (tokenizer.next.type == "println")
     {
@@ -204,6 +205,7 @@ Node *Parser::parseStatement()
             children[0] = parseRelExpr();
             if (tokenizer.next.type == "RPAREN")
             {
+                tokenizer.selectNext();
                 return new Print(children);
             }
             else
@@ -219,20 +221,20 @@ Node *Parser::parseStatement()
         {
             std::vector<Node *> ifBlocklockChildren;
             tokenizer.selectNext();
-            while (tokenizer.next.type != "ELSE" || tokenizer.next.type != "END")
+            while (tokenizer.next.type != "else" && tokenizer.next.type != "end")
             {
                 ifBlocklockChildren.push_back(parseStatement());
                 tokenizer.selectNext();
             }
             children[1] = new Block(ifBlocklockChildren);
-            if (tokenizer.next.type == "ELSE")
+            if (tokenizer.next.type == "else")
             {
                 tokenizer.selectNext();
                 if (tokenizer.next.type == "NEWLINE")
                 {
                     tokenizer.selectNext();
                     std::vector<Node *> elseBlocklockChildren;
-                    while (tokenizer.next.type != "END")
+                    while (tokenizer.next.type != "end")
                     {
                         elseBlocklockChildren.push_back(parseStatement());
                         tokenizer.selectNext();
@@ -240,7 +242,25 @@ Node *Parser::parseStatement()
                     children[2] = new Block(elseBlocklockChildren);
                 }
             }
+            tokenizer.selectNext();
             return new If(children);
+        }
+    }
+    else if (tokenizer.next.type == "while")
+    {
+        children[0] = parseRelExpr();
+        if (tokenizer.next.type == "NEWLINE")
+        {
+            std::vector<Node *> whileBlocklockChildren;
+            tokenizer.selectNext();
+            while (tokenizer.next.type != "end")
+            {
+                whileBlocklockChildren.push_back(parseStatement());
+                tokenizer.selectNext();
+            }
+            children[1] = new Block(whileBlocklockChildren);
+            tokenizer.selectNext();
+            return new While(children);
         }
     }
     else if (tokenizer.next.type == "IDENTIFIER")
