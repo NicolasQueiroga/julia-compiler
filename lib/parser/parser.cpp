@@ -19,8 +19,7 @@ Tokenizer Parser::tokenizer = Tokenizer();
 
 Node *Parser::parseFactor()
 {
-    std::vector<Node *> children(1);
-    children.reserve(1);
+    std::vector<Node *> children(1, nullptr);
     Node *node = nullptr;
 
     tokenizer.selectNext();
@@ -82,8 +81,7 @@ Node *Parser::parseFactor()
 Node *Parser::parseTerm()
 {
     Node *node = Parser::parseFactor();
-    std::vector<Node *> children(2);
-    children.reserve(2);
+    std::vector<Node *> children(2, nullptr);
 
     while (tokenizer.next.type == "MULT" || tokenizer.next.type == "DIV" || tokenizer.next.type == "AND")
     {
@@ -115,8 +113,7 @@ Node *Parser::parseTerm()
 Node *Parser::parseExpression()
 {
     Node *node = Parser::parseTerm();
-    std::vector<Node *> children(2);
-    children.reserve(2);
+    std::vector<Node *> children(2, nullptr);
 
     while (tokenizer.next.type == "PLUS" || tokenizer.next.type == "MINUS" || tokenizer.next.type == "OR")
     {
@@ -147,8 +144,7 @@ Node *Parser::parseExpression()
 Node *Parser::parseRelExpr()
 {
     Node *node = Parser::parseExpression();
-    std::vector<Node *> children(2);
-    children.reserve(2);
+    std::vector<Node *> children(2, nullptr);
 
     if (tokenizer.next.type == "EQUALS")
     {
@@ -193,9 +189,7 @@ Node *Parser::parseRelExpr()
 
 Node *Parser::parseStatement()
 {
-    std::vector<Node *> children(3);
-    children.reserve(3);
-    children[2] = nullptr;
+    std::vector<Node *> children(3, nullptr);
     Node *node = nullptr;
     if (tokenizer.next.type == "println")
     {
@@ -281,6 +275,7 @@ Node *Parser::parseStatement()
         return new NoOp();
     else
         throw "Expected RESERVED or IDENTIFIER or NEWLINE";
+    return new NoOp();
 }
 
 Node *Parser::parseBlock()
