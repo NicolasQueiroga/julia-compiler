@@ -211,6 +211,8 @@ Node *Parser::parseStatement()
             if (tokenizer.next.type == "RPAREN")
             {
                 tokenizer.selectNext();
+                if (tokenizer.next.type != "NEWLINE")
+                    throw "Expected NEWLINE";
                 return new Print(children);
             }
             else
