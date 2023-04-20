@@ -3,7 +3,7 @@
 #include <fstream>
 #include "parser/parser.hpp"
 
-#define DEBUG
+// #define DEBUG
 
 int main(int argc, char **argv)
 {
