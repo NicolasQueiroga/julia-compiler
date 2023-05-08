@@ -31,6 +31,8 @@ ValueType BinOp::Evaluate()
                 return std::to_string(std::get<int>(left)) + std::get<std::string>(right);
             else if (std::holds_alternative<std::string>(left) && std::holds_alternative<int>(right))
                 return std::get<std::string>(left) + std::to_string(std::get<int>(right));
+            else if (std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
+                return std::get<int>(left) + std::get<int>(right);
             else
                 throw "Invalid operands for +";
         }
@@ -39,13 +41,13 @@ ValueType BinOp::Evaluate()
             if (op == "-" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
                 return std::get<int>(left) - std::get<int>(right);
             else if (op == "*" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
-                return std::get<int>(left) - std::get<int>(right);
+                return std::get<int>(left) * std::get<int>(right);
             else if (op == "/" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
-                return std::get<int>(left) - std::get<int>(right);
+                return std::get<int>(left) / std::get<int>(right);
             else if (op == "||" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
-                return std::get<int>(left) - std::get<int>(right);
+                return std::get<int>(left) || std::get<int>(right);
             else if (op == "&&" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
-                return std::get<int>(left) - std::get<int>(right);
+                return std::get<int>(left) && std::get<int>(right);
             else if (op == "<")
                 return left < right;
             else if (op == ">")
