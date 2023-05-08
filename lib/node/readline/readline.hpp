@@ -5,5 +5,5 @@
 class ReadLine : public Node
 {
 public:
-    int Evaluate() override;
+    ValueType Evaluate() override;
 };

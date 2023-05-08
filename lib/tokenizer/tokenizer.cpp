@@ -13,13 +13,14 @@ Tokenizer::Tokenizer() : next("EOF", 0)
     this->reservedWords->push_back("if");
     this->reservedWords->push_back("else");
     this->reservedWords->push_back("end");
+    this->reservedWords->push_back("Int");
+    this->reservedWords->push_back("String");
 }
 
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(>=)|(<=)|(\\|\\|)|(&&)|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
-
+    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(::)|(>=)|(<=)|(\\|\\|)|(&&)|(\"[^\"]*\")|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -82,12 +83,22 @@ void Tokenizer::selectNext()
         this->next.type = "OR";
     else if (tokens[this->position] == "\n")
         this->next.type = "NEWLINE";
+    else if (tokens[this->position] == "::")
+        this->next.type = "DECLARATION";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
-        this->next.type = tokens[this->position];
+    {
+        this->next.type = tokens[this->position] == "Int" || tokens[this->position] == "String" ? "TYPE" : tokens[this->position];
+        this->next.value = tokens[this->position];
+    }
     else if (std::regex_match(tokens[this->position], std::regex("[a-zA-Z0-9_]+")))
     {
         this->next.type = "IDENTIFIER";
         this->next.value = tokens[this->position];
+    }
+    else if (tokens[this->position].front() == '"' && tokens[this->position].back() == '"')
+    {
+        this->next.type = "STRING";
+        this->next.value = tokens[this->position].substr(1, tokens[this->position].length() - 2);
     }
     else
     {

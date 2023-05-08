@@ -1,6 +1,6 @@
 #include "noop.hpp"
 
-int NoOp::Evaluate()
+ValueType NoOp::Evaluate()
 {
     return 0;
 }

@@ -10,5 +10,5 @@ private:
 
 public:
     Identifier(std::variant<int, std::string> value);
-    int Evaluate() override;
+    ValueType Evaluate() override;
 };

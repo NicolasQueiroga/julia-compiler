@@ -5,35 +5,37 @@ BinOp::BinOp(std::vector<Node *> children, std::variant<int, std::string> value)
 {
 }
 
-int BinOp::Evaluate()
+ValueType BinOp::Evaluate()
 {
     if (std::holds_alternative<std::string>(value))
     {
-        this->value = std::get<std::string>(value);
-        if (std::get<std::string>(value) == "+")
-            return children[0]->Evaluate() + children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "-")
-            return children[0]->Evaluate() - children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "*")
-            return children[0]->Evaluate() * children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "/")
-            return children[0]->Evaluate() / children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "||")
-            return children[0]->Evaluate() || children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "&&")
-            return children[0]->Evaluate() && children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "<")
-            return children[0]->Evaluate() < children[1]->Evaluate();
-        else if (std::get<std::string>(value) == ">")
-            return children[0]->Evaluate() > children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "<=")
-            return children[0]->Evaluate() <= children[1]->Evaluate();
-        else if (std::get<std::string>(value) == ">=")
-            return children[0]->Evaluate() >= children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "==")
-            return children[0]->Evaluate() == children[1]->Evaluate();
-        else if (std::get<std::string>(value) == "!=")
-            return children[0]->Evaluate() != children[1]->Evaluate();
+        std::string op = std::get<std::string>(value);
+        int left = std::get<int>(children[0]->Evaluate());
+        int right = std::get<int>(children[1]->Evaluate());
+        if (op == "+")
+            return left + right;
+        else if (op == "-")
+            return left - right;
+        else if (op == "*")
+            return left * right;
+        else if (op == "/")
+            return left / right;
+        else if (op == "||")
+            return left || right;
+        else if (op == "&&")
+            return left && right;
+        else if (op == "<")
+            return left < right;
+        else if (op == ">")
+            return left > right;
+        else if (op == "<=")
+            return left <= right;
+        else if (op == ">=")
+            return left >= right;
+        else if (op == "==")
+            return left == right;
+        else if (op == "!=")
+            return left != right;
         else
             throw "Expected PLUS or MINUS or MUL or DIV or OR or AND";
     }

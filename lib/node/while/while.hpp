@@ -9,5 +9,5 @@ private:
 
 public:
     While(std::vector<Node *> children);
-    int Evaluate() override;
+    ValueType Evaluate() override;
 };

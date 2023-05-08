@@ -27,7 +27,7 @@ add_library(while ${CMAKE_CURRENT_SOURCE_DIR}/while/while.cpp)
 target_include_directories(while PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(print ${CMAKE_CURRENT_SOURCE_DIR}/print/print.cpp)
-target_include_directories(print PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(print PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
 add_library(identifier ${CMAKE_CURRENT_SOURCE_DIR}/identifier/identifier.cpp)
 target_include_directories(identifier PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)

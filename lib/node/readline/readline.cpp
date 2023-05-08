@@ -1,7 +1,7 @@
 #include <iostream>
 #include "readline.hpp"
 
-int ReadLine::Evaluate()
+ValueType ReadLine::Evaluate()
 {
     std::string line;
     std::cin >> line;

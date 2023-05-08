@@ -5,7 +5,7 @@ IntVal::IntVal(std::vector<Node *> children, std::variant<int, std::string> valu
 {
 }
 
-int IntVal::Evaluate()
+ValueType IntVal::Evaluate()
 {
     if (std::holds_alternative<int>(value))
         return std::get<int>(value);

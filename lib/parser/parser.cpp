@@ -14,6 +14,7 @@
 
 #include <memory>
 #include <vector>
+#include <iostream>
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
@@ -280,6 +281,27 @@ Node *Parser::parseStatement()
             children[0] = node;
             children[1] = parseRelExpr();
             return new Assignment(children, identifier);
+        }
+        else if (tokenizer.next.type == "DECLARATION")
+        {
+            tokenizer.selectNext();
+            if (tokenizer.next.type == "TYPE")
+            {
+                std::string type = std::get<std::string>(tokenizer.next.value);
+                tokenizer.selectNext();
+                if (tokenizer.next.type == "ASSIGN")
+                {
+                    children[0] = node;
+                    children[1] = parseRelExpr();
+                    // return new VarDec(type, children);
+                }
+                else if (tokenizer.next.type == "NEWLINE")
+                {
+                    // return new VarDec(type, children);
+                }
+                else
+                    throw "Expected ASSIGN or NEWLINE";
+            }
         }
         else
             throw "Expected ASSIGN";

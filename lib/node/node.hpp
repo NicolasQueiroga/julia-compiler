@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+using ValueType = std::variant<int, std::string>;
 class Node
 {
 protected:
@@ -12,5 +13,5 @@ protected:
 
 public:
     virtual ~Node() = default;
-    virtual int Evaluate() = 0;
+    virtual ValueType Evaluate() = 0;
 };

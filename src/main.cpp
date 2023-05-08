@@ -3,7 +3,7 @@
 #include <fstream>
 #include "parser/parser.hpp"
 
-// #define DEBUG
+#define DEBUG
 
 int main(int argc, char **argv)
 {
@@ -20,10 +20,10 @@ int main(int argc, char **argv)
         return 1;
     }
 #else
-    std::ifstream infile("../in/roteiro4.jl");
+    std::ifstream infile("../in/roteiro.jl");
     if (!infile)
     {
-        std::cerr << "Error opening file: ../in/roteiro4.jl\n";
+        std::cerr << "Error opening file: ../in/roteiro.jl\n";
         return 1;
     }
 #endif
