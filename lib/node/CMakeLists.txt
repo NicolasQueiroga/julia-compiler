@@ -1,5 +1,5 @@
 add_library(binop ${CMAKE_CURRENT_SOURCE_DIR}/binop/binop.cpp)
-target_include_directories(binop PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(binop PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
 add_library(intval ${CMAKE_CURRENT_SOURCE_DIR}/intval/intval.cpp)
 target_include_directories(intval PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
