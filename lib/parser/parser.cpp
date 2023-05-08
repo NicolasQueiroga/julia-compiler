@@ -202,6 +202,12 @@ Node *Parser::parseRelExpr()
         children[1] = Parser::parseExpression();
         node = new BinOp(children, ">=");
     }
+    else if (tokenizer.next.type == "CONCAT")
+    {
+        children[0] = node;
+        children[1] = Parser::parseExpression();
+        node = new BinOp(children, ".");
+    }
     if (tokenizer.next.type == "NUMBER" || tokenizer.next.type == "UNKNOWN")
         throw "Expected EOF";
     return node;
