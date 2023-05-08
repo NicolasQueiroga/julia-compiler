@@ -32,3 +32,9 @@ target_include_directories(print PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURR
 add_library(identifier ${CMAKE_CURRENT_SOURCE_DIR}/identifier/identifier.cpp)
 target_include_directories(identifier PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
 target_link_libraries(identifier PUBLIC symboltable)
+
+add_library(strval ${CMAKE_CURRENT_SOURCE_DIR}/strval/strval.cpp)
+target_include_directories(strval PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+add_library(vardec ${CMAKE_CURRENT_SOURCE_DIR}/vardec/vardec.cpp)
+target_include_directories(vardec PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable ${CMAKE_CURRENT_SOURCE_DIR}/../../include)

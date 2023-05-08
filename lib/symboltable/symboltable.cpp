@@ -1,24 +1,49 @@
 #include "symboltable.hpp"
+#include <utils.hpp>
 #include <iostream>
 
-std::shared_ptr<std::map<std::string, ValueType>> SymbolTable::table = std::make_shared<std::map<std::string, ValueType>>();
+std::shared_ptr<std::map<std::string, TableValue>> SymbolTable::table = std::make_shared<std::map<std::string, TableValue>>();
 
 SymbolTable::SymbolTable()
 {
 }
 
-ValueType SymbolTable::getter(std::string key)
+void SymbolTable::showAll()
 {
-    if (std::holds_alternative<std::string>(SymbolTable::table->at(key)))
-        return std::get<std::string>(SymbolTable::table->at(key));
-    else if (std::holds_alternative<int>(SymbolTable::table->at(key)))
-        return std::get<int>(SymbolTable::table->at(key));
+    std::cout << "MAP:\n";
+    for (auto const &pair : *SymbolTable::table)
+    {
+        std::cout << "{" << pair.first << ": " << pair.second.value_type << ", " << pair.second.value << "}" << std::endl;
+    }
+    std::cout << "END MAP\n";
+}
+
+void SymbolTable::create(std::string key, std::string value_type, ValueType value)
+{
+    if (SymbolTable::table->find(key) == SymbolTable::table->end())
+    {
+        TableValue table_value = {value_type, value};
+        SymbolTable::table->insert({key, table_value});
+    }
+    else
+        throw "Error: " + key + " already exists.";
+}
+
+TableValue SymbolTable::getter(std::string key)
+{
+    if (SymbolTable::table->find(key) != SymbolTable::table->end())
+        return SymbolTable::table->at(key);
+    else
+        throw "Error: " + key + " does not exist.";
 }
 
 void SymbolTable::setter(std::string key, ValueType value)
 {
-    if (SymbolTable::table->find(key) == SymbolTable::table->end())
-        table->insert(std::pair<std::string, ValueType>(key, value));
+    if (SymbolTable::table->find(key) != SymbolTable::table->end())
+    {
+        std::string type = SymbolTable::table->at(key).value_type;
+        SymbolTable::table->at(key) = {type, value};
+    }
     else
-        table->at(key) = value;
+        throw "Error: " + key + " does not exist.";
 }

@@ -2,6 +2,7 @@
 #include "prepro/prepro.hpp"
 #include "binop/binop.hpp"
 #include "intval/intval.hpp"
+#include "strval/strval.hpp"
 #include "noop/noop.hpp"
 #include "unop/unop.hpp"
 #include "block/block.hpp"
@@ -11,6 +12,7 @@
 #include "if/if.hpp"
 #include "while/while.hpp"
 #include "readline/readline.hpp"
+#include "vardec/vardec.hpp"
 
 #include <memory>
 #include <vector>
@@ -27,6 +29,12 @@ Node *Parser::parseFactor()
     if (tokenizer.next.type == "NUMBER")
     {
         node = new IntVal(children, tokenizer.next.value);
+        tokenizer.selectNext();
+        return node;
+    }
+    else if (tokenizer.next.type == "STRING")
+    {
+        node = new StrVal(children, tokenizer.next.value);
         tokenizer.selectNext();
         return node;
     }
@@ -293,11 +301,12 @@ Node *Parser::parseStatement()
                 {
                     children[0] = node;
                     children[1] = parseRelExpr();
-                    // return new VarDec(type, children);
+                    return new VarDec(type, identifier, children);
                 }
                 else if (tokenizer.next.type == "NEWLINE")
                 {
-                    // return new VarDec(type, children);
+                    children[1] = new NoOp();
+                    return new VarDec(type, identifier, children);
                 }
                 else
                     throw "Expected ASSIGN or NEWLINE";

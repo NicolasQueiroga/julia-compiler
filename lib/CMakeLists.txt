@@ -11,8 +11,10 @@ add_library(prepro ${CMAKE_CURRENT_SOURCE_DIR}/prepro/prepro.cpp)
 target_include_directories(prepro PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(symboltable ${CMAKE_CURRENT_SOURCE_DIR}/symboltable/symboltable.cpp)
+target_include_directories(symboltable PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)
+
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/node)
 
 target_link_libraries(tokenizer PUBLIC token)
-target_link_libraries(parser PUBLIC tokenizer prepro binop intval unop noop block identifier assignment print readline while if)
+target_link_libraries(parser PUBLIC tokenizer prepro binop intval unop noop block identifier assignment print readline while if strval vardec)

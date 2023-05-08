@@ -20,7 +20,7 @@ Tokenizer::Tokenizer() : next("EOF", 0)
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(::)|(>=)|(<=)|(\\|\\|)|(&&)|(\"[^\"]*\")|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
+    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(::)|(>=)|(<=)|(\\|\\|)|(&&)|(.)|(\"[^\"]*\")|[\\+\\-\\/\\*\\(\\)\\=\\\n,<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -85,6 +85,8 @@ void Tokenizer::selectNext()
         this->next.type = "NEWLINE";
     else if (tokens[this->position] == "::")
         this->next.type = "DECLARATION";
+    else if (tokens[this->position] == ".")
+        this->next.type = "CONCAT";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
     {
         this->next.type = tokens[this->position] == "Int" || tokens[this->position] == "String" ? "TYPE" : tokens[this->position];
