@@ -7,14 +7,15 @@ std::string Assembler::asmCode = "";
 
 void Assembler::setFileName(std::string file_name)
 {
+    file_name.erase(file_name.find_last_of("."), std::string::npos);
     Assembler::fileName = file_name;
 }
 
 void Assembler::setHeader()
 {
-    std::ifstream infile("include/header.asm");
+    std::ifstream infile("../lib/assembler/include/header.asm");
     if (!infile)
-        throw std::runtime_error("Error opening file: include/header.asm\n");
+        throw std::runtime_error("Error opening file: ../lib/assembler/include/header.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
     Assembler::asmCode += file_contents;
@@ -28,9 +29,9 @@ void Assembler::incrementAsmCode(std::string code)
 
 void Assembler::setFooter()
 {
-    std::ifstream infile("include/footer.asm");
+    std::ifstream infile("../lib/assembler/include/footer.asm");
     if (!infile)
-        throw std::runtime_error("Error opening file: include/footer.asm\n");
+        throw std::runtime_error("Error opening file: ../lib/assembler/include/footer.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
     Assembler::asmCode += file_contents;
@@ -39,7 +40,7 @@ void Assembler::setFooter()
 
 void Assembler::write()
 {
-    std::string filePath = "../../build/" + fileName + ".asm";
+    std::string filePath = "../build/" + fileName + ".asm";
     std::ofstream outfile(filePath);
     outfile << asmCode;
     outfile.close();
