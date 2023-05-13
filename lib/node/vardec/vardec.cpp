@@ -1,6 +1,5 @@
 #include "vardec.hpp"
-#include "utils.hpp"
-#include <iostream>
+#include "assembler.hpp"
 
 VarDec::VarDec(std::string type, std::string value, std::vector<Node *> children)
     : type(type), value(value), children(children)

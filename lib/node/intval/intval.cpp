@@ -1,4 +1,5 @@
 #include "intval.hpp"
+#include "assembler.hpp"
 
 IntVal::IntVal(std::vector<Node *> children, std::variant<int, std::string> value)
     : children(children), value(value)

@@ -1,4 +1,5 @@
 #include "unop.hpp"
+#include "assembler.hpp"
 
 UnOp::UnOp(std::vector<Node *> children, std::variant<int, std::string> value)
     : children(children), value(value)

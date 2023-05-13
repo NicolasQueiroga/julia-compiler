@@ -1,4 +1,5 @@
 #include "assignment.hpp"
+#include "assembler.hpp"
 
 Assignment::Assignment(std::vector<Node *> children, std::variant<int, std::string> value) : children(children), value(value)
 {

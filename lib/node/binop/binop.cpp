@@ -1,6 +1,5 @@
 #include "binop.hpp"
-#include "utils.hpp"
-#include <iostream>
+#include "assembler.hpp"
 
 BinOp::BinOp(std::vector<Node *> children, std::variant<int, std::string> value)
     : children(children), value(value)

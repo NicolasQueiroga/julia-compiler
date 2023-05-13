@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include "parser/parser.hpp"
+#include "assembler/assembler.hpp"
 
 // #define DEBUG
 
@@ -19,6 +20,7 @@ int main(int argc, char **argv)
         std::cerr << "Error opening file: " << argv[1] << '\n';
         return 1;
     }
+    Assembler::setFileName(argv[1]);
 #else
     std::ifstream infile("../in/roteiro.jl");
     if (!infile)
@@ -26,6 +28,7 @@ int main(int argc, char **argv)
         std::cerr << "Error opening file: ../in/roteiro.jl\n";
         return 1;
     }
+    Assembler::setFileName("roteiro.jl");
 #endif
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
     Node *tree = Parser::run(file_contents);

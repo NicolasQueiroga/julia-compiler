@@ -1,4 +1,5 @@
 #include "while.hpp"
+#include "assembler.hpp"
 
 While::While(std::vector<Node *> children) : children(children) {}
 

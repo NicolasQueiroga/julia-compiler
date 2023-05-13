@@ -1,5 +1,6 @@
-#include <iostream>
 #include "readline.hpp"
+#include "assembler.hpp"
+#include <iostream>
 
 ValueType ReadLine::Evaluate()
 {

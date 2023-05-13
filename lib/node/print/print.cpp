@@ -1,5 +1,6 @@
 #include "print.hpp"
 #include "utils.hpp"
+#include "assembler.hpp"
 #include <iostream>
 
 Print::Print(std::vector<Node *> children) : children(children)

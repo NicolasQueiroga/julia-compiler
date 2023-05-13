@@ -1,4 +1,5 @@
 #include "identifier.hpp"
+#include "assembler.hpp"
 
 Identifier::Identifier(std::variant<int, std::string> value) : value(value)
 {

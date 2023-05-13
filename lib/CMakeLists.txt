@@ -13,6 +13,7 @@ target_include_directories(prepro PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 add_library(symboltable ${CMAKE_CURRENT_SOURCE_DIR}/symboltable/symboltable.cpp)
 target_include_directories(symboltable PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../include)
 
+add_library(assembler ${CMAKE_CURRENT_SOURCE_DIR}/assembler/assembler.cpp)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/node)
 

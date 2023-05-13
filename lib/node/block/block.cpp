@@ -1,4 +1,5 @@
 #include "block.hpp"
+#include "assembler.hpp"
 
 Block::Block(std::vector<Node *> children) : children(children)
 {

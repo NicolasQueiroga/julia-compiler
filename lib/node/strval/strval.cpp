@@ -1,5 +1,5 @@
 #include "strval.hpp"
-#include <iostream>
+#include "assembler.hpp"
 
 StrVal::StrVal(std::vector<Node *> children, ValueType value)
     : children(children), value(value)

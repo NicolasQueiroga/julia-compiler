@@ -1,5 +1,5 @@
 #include "if.hpp"
-#include <iostream>
+#include "assembler.hpp"
 
 If::If(std::vector<Node *> children) : children(children)
 {
