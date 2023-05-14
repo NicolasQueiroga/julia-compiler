@@ -12,7 +12,7 @@ ValueType Identifier::Evaluate()
     if (std::holds_alternative<std::string>(value))
     {
         TableValue getter = this->getter(std::get<std::string>(this->value));
-        Assembler::incrementAsmCode("MOV EBX, [EBP-" + std::to_string(SymbolTable::offset) + "]");
+        Assembler::incrementAsmCode("MOV EBX, [EBP-" + getter.size + "]");
 
         return getter.value;
         if (getter.value_type == "Int")

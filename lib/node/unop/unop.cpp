@@ -15,9 +15,15 @@ ValueType UnOp::Evaluate()
         if (std::get<std::string>(value) == "+")
             return val;
         else if (std::get<std::string>(value) == "-")
+        {
+            Assembler::incrementAsmCode("NEG EBX");
             return -val;
+        }
         else if (std::get<std::string>(value) == "!")
+        {
+            Assembler::incrementAsmCode("NOT EBX");
             return !val;
+        }
         else
             throw "Expected PLUS or MINUS";
     }

@@ -10,8 +10,11 @@ class Node
 protected:
     std::variant<int, std::string> value;
     std::vector<Node *> children;
+    static int label;
+    int index;
 
 public:
+    Node();
     virtual ~Node() = default;
     virtual ValueType Evaluate() = 0;
 };

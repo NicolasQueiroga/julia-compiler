@@ -28,6 +28,7 @@ ValueType BinOp::Evaluate()
         else if (op == "+")
         {
             Assembler::incrementAsmCode("ADD EAX, EBX");
+            Assembler::incrementAsmCode("MOV EBX, EAX");
             if (std::holds_alternative<std::string>(left) && std::holds_alternative<std::string>(right))
                 result = std::get<std::string>(left) + std::get<std::string>(right);
             else if (std::holds_alternative<int>(left) && std::holds_alternative<std::string>(right))
@@ -44,16 +45,19 @@ ValueType BinOp::Evaluate()
             if (op == "-" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
             {
                 Assembler::incrementAsmCode("SUB EAX, EBX");
+                Assembler::incrementAsmCode("MOV EBX, EAX");
                 result = std::get<int>(left) - std::get<int>(right);
             }
             else if (op == "*" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
             {
                 Assembler::incrementAsmCode("IMUL EBX");
+                Assembler::incrementAsmCode("MOV EBX, EAX");
                 result = std::get<int>(left) * std::get<int>(right);
             }
             else if (op == "/" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
             {
                 Assembler::incrementAsmCode("IDIV EBX");
+                Assembler::incrementAsmCode("MOV EBX, EAX");
                 result = std::get<int>(left) / std::get<int>(right);
             }
             else if (op == "||" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
@@ -61,22 +65,33 @@ ValueType BinOp::Evaluate()
             else if (op == "&&" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
                 result = std::get<int>(left) && std::get<int>(right);
             else if (op == "<")
+            {
+                Assembler::incrementAsmCode("CMP EAX, EBX");
+                Assembler::incrementAsmCode("CALL binop_jl");
                 result = left < right;
+            }
             else if (op == ">")
+            {
+                Assembler::incrementAsmCode("CMP EAX, EBX");
+                Assembler::incrementAsmCode("CALL binop_jg");
                 result = left > right;
+            }
             else if (op == "<=")
                 result = left <= right;
             else if (op == ">=")
                 result = left >= right;
             else if (op == "==")
+            {
+                Assembler::incrementAsmCode("CMP EAX, EBX");
+                Assembler::incrementAsmCode("CALL binop_je");
                 result = left == right;
+            }
             else if (op == "!=")
                 result = left != right;
             else
                 throw "Expected PLUS or MINUS or MUL or DIV or OR or AND";
         }
 
-        Assembler::incrementAsmCode("MOV EBX, EAX");
         return result;
     }
     else

@@ -10,6 +10,6 @@ Print::Print(std::vector<Node *> children) : children(children)
 ValueType Print::Evaluate()
 {
     std::cout << this->children[0]->Evaluate() << std::endl;
-    Assembler::incrementAsmCode("PUSH EBX\nCALL PRINT\nPOP EBX");
+    Assembler::incrementAsmCode("PUSH EBX\nCALL print\nPOP EBX");
     return 0;
 }
