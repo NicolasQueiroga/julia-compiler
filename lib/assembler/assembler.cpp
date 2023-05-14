@@ -13,12 +13,9 @@ void Assembler::setFileName(std::string file_name)
 
 void Assembler::setHeader()
 {
-    // execute pwd to get the current directory
-    std::string pwd = std::string(getenv("PWD"));
-    std::cout << pwd << '\n';
-    std::ifstream infile("../lib/assembler/include/header.asm");
+    std::ifstream infile("lib/assembler/include/header.asm");
     if (!infile)
-        throw std::runtime_error("Error opening file: ../lib/assembler/include/header.asm\n");
+        throw std::runtime_error("Error opening file: lib/assembler/include/header.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
     Assembler::asmCode += file_contents + '\n';
@@ -32,9 +29,9 @@ void Assembler::incrementAsmCode(std::string code)
 
 void Assembler::setFooter()
 {
-    std::ifstream infile("../lib/assembler/include/footer.asm");
+    std::ifstream infile("lib/assembler/include/footer.asm");
     if (!infile)
-        throw std::runtime_error("Error opening file: ../lib/assembler/include/footer.asm\n");
+        throw std::runtime_error("Error opening file: lib/assembler/include/footer.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
     Assembler::asmCode += "\n\n" + file_contents;
