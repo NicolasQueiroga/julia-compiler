@@ -8,6 +8,9 @@ std::string Assembler::asmCode = "";
 void Assembler::setFileName(std::string file_name)
 {
     file_name.erase(file_name.find_last_of("."), std::string::npos);
+    size_t last_slash = file_name.find_last_of('/');
+    if (last_slash != std::string::npos)
+        file_name = file_name.substr(last_slash + 1);
     Assembler::fileName = file_name;
 }
 
