@@ -40,7 +40,7 @@ void Assembler::setFooter()
 
 void Assembler::write()
 {
-    std::string filePath = "../build/" + fileName + ".asm";
+    std::string filePath = fileName + ".asm";
     std::ofstream outfile(filePath);
     outfile << asmCode;
     outfile.close();
