@@ -1,4 +1,4 @@
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../assembler)
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../assembler ${CMAKE_CURRENT_SOURCE_DIR}/../../include)
 
 add_library(binop ${CMAKE_CURRENT_SOURCE_DIR}/binop/binop.cpp)
 target_include_directories(binop PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -18,8 +18,7 @@ target_link_libraries(noop PUBLIC assembler)
 
 add_library(assignment ${CMAKE_CURRENT_SOURCE_DIR}/assignment/assignment.cpp)
 target_include_directories(assignment PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
-target_link_libraries(assignment PUBLIC symboltable)
-target_link_libraries(assignment PUBLIC assembler)
+target_link_libraries(assignment PUBLIC symboltable assembler)
 
 add_library(block ${CMAKE_CURRENT_SOURCE_DIR}/block/block.cpp)
 target_include_directories(block PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

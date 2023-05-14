@@ -18,13 +18,13 @@ void Assembler::setHeader()
         throw std::runtime_error("Error opening file: ../lib/assembler/include/header.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
-    Assembler::asmCode += file_contents;
+    Assembler::asmCode += file_contents + '\n';
     infile.close();
 }
 
 void Assembler::incrementAsmCode(std::string code)
 {
-    Assembler::asmCode += code;
+    Assembler::asmCode += '\n' + code;
 }
 
 void Assembler::setFooter()
@@ -34,7 +34,7 @@ void Assembler::setFooter()
         throw std::runtime_error("Error opening file: ../lib/assembler/include/footer.asm\n");
     
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
-    Assembler::asmCode += file_contents;
+    Assembler::asmCode += "\n\n" + file_contents;
     infile.close();
 }
 

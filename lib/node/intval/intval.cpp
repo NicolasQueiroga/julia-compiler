@@ -9,7 +9,10 @@ IntVal::IntVal(std::vector<Node *> children, std::variant<int, std::string> valu
 ValueType IntVal::Evaluate()
 {
     if (std::holds_alternative<int>(value))
+    {
+        Assembler::incrementAsmCode("MOV EBX, " + std::to_string(std::get<int>(value)));
         return std::get<int>(value);
+    }
     else
         throw "Expected int";
 }

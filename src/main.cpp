@@ -4,7 +4,7 @@
 #include "parser/parser.hpp"
 #include "assembler/assembler.hpp"
 
-// #define DEBUG
+#define DEBUG
 
 int main(int argc, char **argv)
 {
