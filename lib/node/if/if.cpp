@@ -8,7 +8,7 @@ If::If(std::vector<Node *> children) : children(children)
 
 ValueType If::Evaluate()
 {
-    int ans = std::get<0>(this->children[0]->Evaluate());
+    this->children[0]->Evaluate();
     Assembler::incrementAsmCode("CMP EBX, True");
     Assembler::incrementAsmCode("JE IF_" + std::to_string(index));
     if (this->size == 3)
