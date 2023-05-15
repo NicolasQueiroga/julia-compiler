@@ -3,3 +3,5 @@ build/
 in/
 .vscode/
 .DS_Store/
+*.o
+/*.asm
