@@ -61,9 +61,17 @@ ValueType BinOp::Evaluate()
                 result = std::get<int>(left) / std::get<int>(right);
             }
             else if (op == "||" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
+            {
+                Assembler::incrementAsmCode("OR EAX, EBX");
+                Assembler::incrementAsmCode("MOV EBX, EAX");
                 result = std::get<int>(left) || std::get<int>(right);
+            }
             else if (op == "&&" && std::holds_alternative<int>(left) && std::holds_alternative<int>(right))
+            {
+                Assembler::incrementAsmCode("AND EAX, EBX");
+                Assembler::incrementAsmCode("MOV EBX, EAX");
                 result = std::get<int>(left) && std::get<int>(right);
+            }
             else if (op == "<")
             {
                 Assembler::incrementAsmCode("CMP EAX, EBX");
