@@ -49,12 +49,18 @@ mkdir build
 cd build
 cmake ..
 make
-../bin/main "1+1+2"
+../bin/main arquivo.jl
 ```
   
 - Para remover os feedbacks que tanto o comando `cmake` quanto o comando `make` geram, basta executa-los do seguinte jeito:
 ```bash
 cmake .. > /dev/null
 make > /dev/null
-../bin/main "1+1+2"
+../bin/main arquivo.jl
+```
+
+- Para compilar o arquivo `.asm` gerado pelo compilador, basta executar os seguintes comandos:
+```bash
+nasm -f elf32 -F dwarf -g arquivo.asm
+ld -m elf_i386 -o teste arquivo.o
 ```
