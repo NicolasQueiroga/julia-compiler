@@ -31,6 +31,7 @@ int main(int argc, char **argv)
     Assembler::setFileName("roteiro.jl");
 #endif
     std::string file_contents((std::istreambuf_iterator<char>(infile)), std::istreambuf_iterator<char>());
+    file_contents += '\n';
     Assembler::setHeader();
     Node *tree = Parser::run(file_contents);
     tree->Evaluate();
