@@ -12,8 +12,8 @@ ValueType Assignment::Evaluate()
     if (std::holds_alternative<std::string>(value))
     {
         this->setter(std::get<std::string>(value), children[1]->Evaluate());
-        std::string ofset = this->getter(std::get<std::string>(value)).size;
-        Assembler::incrementAsmCode("MOV [EBP-" + ofset + "], EBX");
+        std::string offset = this->getter(std::get<std::string>(value)).size;
+        Assembler::incrementAsmCode("MOV [EBP-" + offset + "], EBX");
     }
     else
         throw "Expected string";
