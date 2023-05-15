@@ -311,7 +311,7 @@ Node *Parser::parseStatement()
                 }
                 else if (tokenizer.next.type == "NEWLINE")
                 {
-                    children[1] = new NoOp();
+                    children[1] = nullptr;
                     return new VarDec(type, identifier, children);
                 }
                 else
