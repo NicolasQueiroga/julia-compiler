@@ -11,7 +11,7 @@ ValueType If::Evaluate()
     this->children[0]->Evaluate();
     Assembler::incrementAsmCode("CMP EBX, True");
     Assembler::incrementAsmCode("JE IF_" + std::to_string(index));
-    if (this->size == 3)
+    if (this->children[2] != nullptr)
         this->children[2]->Evaluate();
     Assembler::incrementAsmCode("JMP EXIT_" + std::to_string(index));
     Assembler::incrementAsmCode("IF_" + std::to_string(index) + ":");
