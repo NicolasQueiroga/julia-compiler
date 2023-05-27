@@ -1,4 +1,4 @@
-// #define DEBUG
+#define DEBUG
 
 #include <regex>
 #include <iostream>
@@ -15,12 +15,14 @@ Tokenizer::Tokenizer() : next("EOF", 0)
     this->reservedWords->push_back("end");
     this->reservedWords->push_back("Int");
     this->reservedWords->push_back("String");
+    this->reservedWords->push_back("function");
+    this->reservedWords->push_back("return");
 }
 
 void Tokenizer::fetchTokens()
 {
     std::smatch m;
-    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(::)|(>=)|(<=)|(\\|\\|)|(&&)|(\\.)|(\"[^\"]*\")|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
+    std::regex e("[0-9]+|(_?[a-zA-Z][_a-zA-Z0-9]*_?)|(==)|(!=)|(::)|(\\,)|(>=)|(<=)|(\\|\\|)|(&&)|(\\.)|(\"[^\"]*\")|[\\+\\-\\/\\*\\(\\)\\=\\\n,.<>!?:;@#$%^&*_~`\\|\\{\\}[\\]]");
 
     while (std::regex_search(this->source, m, e))
     {
@@ -87,6 +89,8 @@ void Tokenizer::selectNext()
         this->next.type = "DECLARATION";
     else if (tokens[this->position] == ".")
         this->next.type = "CONCAT";
+    else if (tokens[this->position] == ".")
+        this->next.type = "COMMA";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
     {
         this->next.type = tokens[this->position] == "Int" || tokens[this->position] == "String" ? "TYPE" : tokens[this->position];

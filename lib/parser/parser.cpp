@@ -13,6 +13,9 @@
 #include "while/while.hpp"
 #include "readline/readline.hpp"
 #include "vardec/vardec.hpp"
+#include "funcdec/funcdec.hpp"
+#include "return/return.hpp"
+#include "funccall/funccall.hpp"
 
 #include <memory>
 #include <vector>
@@ -236,6 +239,78 @@ Node *Parser::parseStatement()
         else
             throw "Expected LPAREN";
     }
+    else if (tokenizer.next.type == "function")
+    {
+        tokenizer.selectNext();
+        if (tokenizer.next.type == "IDENTIFIER")
+        {
+            node = new Identifier(tokenizer.next.value);
+            children[0] = node;
+            std::string func_identifier = std::get<std::string>(tokenizer.next.value);
+            tokenizer.selectNext();
+            if (tokenizer.next.type == "LPAREN")
+            {
+                tokenizer.selectNext();
+                std::string param_identifier;
+                std::string param_type;
+                std::vector<Node *> params;
+                std::vector<Node *> param_children(1, nullptr);
+                while (tokenizer.next.type != "RPAREN")
+                {
+                    if (tokenizer.next.type == "IDENTIFIER")
+                    {
+                        param_children[0] = new Identifier(tokenizer.next.value);
+                        param_identifier = std::get<std::string>(tokenizer.next.value);
+                        tokenizer.selectNext();
+                       if (tokenizer.next.type == "DECLARATION")
+                        {
+                            tokenizer.selectNext();
+                            if (tokenizer.next.type == "TYPE")
+                            {
+                                param_type = std::get<std::string>(tokenizer.next.value);
+                                tokenizer.selectNext();
+                            }
+                            if (tokenizer.next.type != "COMMA" && tokenizer.next.type != "RPAREN")
+                                throw "Expected COMMA or RPAREN";   
+                        }
+                    }
+                    params.push_back(new VarDec(param_type, param_identifier, param_children));
+                }
+
+                std::string func_type;
+                tokenizer.selectNext();
+                if (tokenizer.next.type == "DECLARATION")
+                {
+                    tokenizer.selectNext();
+                    if (tokenizer.next.type == "TYPE")
+                    {
+                        func_type = std::get<std::string>(tokenizer.next.value);
+                        tokenizer.selectNext();
+                        if (tokenizer.next.type == "NEWLINE")
+                        {
+                            tokenizer.selectNext();
+                            std::vector<Node *> func_children;
+                            while (tokenizer.next.type != "end")
+                            {
+                                func_children.push_back(parseStatement());
+                                tokenizer.selectNext();
+                            }
+                            children[1] = new Block(func_children);
+                            return new FuncDec(func_type, func_identifier, params, children);
+                        }
+                    }
+                }
+            }
+        }
+    }
+    else if (tokenizer.next.type == "return")
+    {
+        children[0] = parseRelExpr();
+        if (tokenizer.next.type == "NEWLINE")
+        {
+            return new Return(children);
+        }
+    }
     else if (tokenizer.next.type == "if")
     {
         children[0] = parseRelExpr();
@@ -317,6 +392,19 @@ Node *Parser::parseStatement()
                 else
                     throw "Expected ASSIGN or NEWLINE";
             }
+        }
+        else if (tokenizer.next.type == "LPAREN")
+        {
+            tokenizer.selectNext();
+            std::vector<Node *> args;
+            while (tokenizer.next.type != "RPAREN")
+            {
+                args.push_back(parseRelExpr());
+                tokenizer.selectNext();
+                if (tokenizer.next.type != "COMMA" && tokenizer.next.type != "RPAREN")
+                    throw "Expected COMMA or RPAREN";
+            }
+            return new FuncCall(identifier, args);
         }
         else
             throw "Expected ASSIGN";

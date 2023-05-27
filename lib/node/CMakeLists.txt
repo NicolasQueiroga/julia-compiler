@@ -52,4 +52,16 @@ target_link_libraries(strval PUBLIC assembler node)
 
 add_library(vardec ${CMAKE_CURRENT_SOURCE_DIR}/vardec/vardec.cpp)
 target_include_directories(vardec PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
-target_link_libraries(vardec PUBLIC assembler node)
+target_link_libraries(vardec PUBLIC symboltable assembler node)
+
+add_library(funcdec ${CMAKE_CURRENT_SOURCE_DIR}/funcdec/funcdec.cpp)
+target_include_directories(funcdec PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../functable)
+target_link_libraries(funcdec PUBLIC functable assembler node)
+
+add_library(return ${CMAKE_CURRENT_SOURCE_DIR}/return/return.cpp)
+target_include_directories(return PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(return PUBLIC assembler node)
+
+add_library(funccall ${CMAKE_CURRENT_SOURCE_DIR}/funccall/funccall.cpp)
+target_include_directories(funccall PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/../functable ${CMAKE_CURRENT_SOURCE_DIR}/../symboltable)
+target_link_libraries(funccall PUBLIC symboltable functable assembler node)
