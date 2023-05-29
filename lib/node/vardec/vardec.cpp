@@ -14,7 +14,7 @@ ValueType VarDec::Evaluate(SymbolTable *symbolTable)
     int size = this->type == "Int" ? 4 : 1;
     if (this->children[1] != nullptr)
     {
-        int eval = std::get<int>(this->children[1]->Evaluate(symbolTable));
+        ValueType eval = this->children[1]->Evaluate(symbolTable);
         symbolTable->create(this->value, this->type, size, eval);
         std::string ofset = symbolTable->getter(this->value).size;
         Assembler::incrementAsmCode("MOV [EBP-" + ofset + "], EBX");
