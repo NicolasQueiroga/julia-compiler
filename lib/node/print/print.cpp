@@ -7,10 +7,10 @@ Print::Print(std::vector<Node *> children) : children(children)
 {
 }
 
-ValueType Print::Evaluate()
+ValueType Print::Evaluate(SymbolTable *symbolTable)
 {
-    // std::cout << this->children[0]->Evaluate() << std::endl;
-    this->children[0]->Evaluate();
-    Assembler::incrementAsmCode("PUSH EBX\nCALL print\nPOP EBX");
+    std::cout << this->children[0]->Evaluate(symbolTable) << std::endl;
+    // this->children[0]->Evaluate(symbolTable);
+    // Assembler::incrementAsmCode("PUSH EBX\nCALL print\nPOP EBX");
     return 0;
 }

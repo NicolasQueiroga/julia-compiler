@@ -6,14 +6,14 @@ BinOp::BinOp(std::vector<Node *> children, std::variant<int, std::string> value)
 {
 }
 
-ValueType BinOp::Evaluate()
+ValueType BinOp::Evaluate(SymbolTable *symbolTable)
 {
     if (std::holds_alternative<std::string>(value))
     {
         std::string op = std::get<std::string>(value);
-        ValueType left = children[0]->Evaluate();
+        ValueType left = children[0]->Evaluate(symbolTable);
         Assembler::incrementAsmCode("PUSH EBX");
-        ValueType right = children[1]->Evaluate();
+        ValueType right = children[1]->Evaluate(symbolTable);
         Assembler::incrementAsmCode("POP EAX");
         ValueType result = 0;
 

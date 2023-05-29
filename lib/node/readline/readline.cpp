@@ -2,7 +2,7 @@
 #include "assembler.hpp"
 #include <iostream>
 
-ValueType ReadLine::Evaluate()
+ValueType ReadLine::Evaluate(SymbolTable *symbolTable)
 {
     std::string line;
     std::cin >> line;

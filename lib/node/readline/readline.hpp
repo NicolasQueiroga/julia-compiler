@@ -5,5 +5,5 @@
 class ReadLine : public Node
 {
 public:
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

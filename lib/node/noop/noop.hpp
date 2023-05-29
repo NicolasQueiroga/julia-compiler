@@ -5,5 +5,5 @@
 class NoOp : public Node
 {
 public:
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

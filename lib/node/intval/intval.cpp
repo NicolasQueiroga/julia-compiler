@@ -6,7 +6,7 @@ IntVal::IntVal(std::vector<Node *> children, std::variant<int, std::string> valu
 {
 }
 
-ValueType IntVal::Evaluate()
+ValueType IntVal::Evaluate(SymbolTable *symbolTable)
 {
     if (std::holds_alternative<int>(value))
     {

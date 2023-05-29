@@ -7,12 +7,12 @@ Assignment::Assignment(std::vector<Node *> children, std::variant<int, std::stri
 {
 }
 
-ValueType Assignment::Evaluate()
+ValueType Assignment::Evaluate(SymbolTable *symbolTable)
 {
     if (std::holds_alternative<std::string>(value))
     {
-        this->setter(std::get<std::string>(value), children[1]->Evaluate());
-        std::string offset = this->getter(std::get<std::string>(value)).size;
+        symbolTable->setter(std::get<std::string>(value), children[1]->Evaluate(symbolTable));
+        std::string offset = symbolTable->getter(std::get<std::string>(value)).size;
         Assembler::incrementAsmCode("MOV [EBP-" + offset + "], EBX");
     }
     else

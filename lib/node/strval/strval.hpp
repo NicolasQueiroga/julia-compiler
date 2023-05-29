@@ -10,5 +10,5 @@ private:
 
 public:
     StrVal(std::vector<Node *> children, ValueType value);
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

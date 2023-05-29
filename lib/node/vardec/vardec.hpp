@@ -12,5 +12,5 @@ private:
 
 public:
     VarDec(std::string type, std::string value, std::vector<Node *> children);
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

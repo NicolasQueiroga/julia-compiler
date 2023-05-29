@@ -1,13 +1,15 @@
 #include "functable.hpp"
+#include "utils.hpp"
+#include <iostream>
 
-std::shared_ptr<std::map<std::string, Node *>> FuncTable::table = std::make_shared<std::map<std::string, Node *>>();
+std::shared_ptr<std::map<std::string, FuncDec *>> FuncTable::table = std::make_shared<std::map<std::string, FuncDec *>>();
 int FuncTable::offset = 0;
 
 FuncTable::FuncTable()
 {
 }
 
-void FuncTable::create(std::string key, Node *func_ref, int type_size=0)
+void FuncTable::create(std::string key, FuncDec *func_ref, int type_size)
 {
     if (FuncTable::table->find(key) == FuncTable::table->end())
     {
@@ -19,10 +21,12 @@ void FuncTable::create(std::string key, Node *func_ref, int type_size=0)
         throw "Error: " + key + " already exists.";
 }
 
-Node *FuncTable::getter(std::string key)
+FuncDec *FuncTable::getter(std::string key)
 {
     if (FuncTable::table->find(key) != FuncTable::table->end())
+    {
         return FuncTable::table->at(key);
+    }
     else
         throw "Error: " + key + " does not exist.";
 }

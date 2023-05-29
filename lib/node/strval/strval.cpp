@@ -6,7 +6,7 @@ StrVal::StrVal(std::vector<Node *> children, ValueType value)
 {
 }
 
-ValueType StrVal::Evaluate()
+ValueType StrVal::Evaluate(SymbolTable *symbolTable)
 {
     if (std::holds_alternative<std::string>(value))
         return std::get<std::string>(value);

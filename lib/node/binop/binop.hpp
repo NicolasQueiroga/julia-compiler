@@ -12,5 +12,5 @@ private:
 
 public:
     BinOp(std::vector<Node *> children, std::variant<int, std::string> value);
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

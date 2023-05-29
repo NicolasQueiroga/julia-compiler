@@ -10,4 +10,4 @@ add_executable(main src/main.cpp)
 
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/lib)
 
-target_link_libraries(main PUBLIC parser assembler)
+target_link_libraries(main PUBLIC parser assembler symboltable)

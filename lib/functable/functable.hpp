@@ -1,6 +1,7 @@
 #pragma once
 
 #include "node.hpp"
+#include "funcdec/funcdec.hpp"
 
 #include <memory>
 #include <map>
@@ -17,11 +18,11 @@ struct FuncTableValue
 class FuncTable
 {
 protected:
-    static std::shared_ptr<std::map<std::string, Node *>> table;
+    static std::shared_ptr<std::map<std::string, FuncDec *>> table;
     static int offset;
 
 public:
     FuncTable();
-    void create(std::string key, Node *func_ref, int type_size);
-    Node *getter(std::string key);
+    void create(std::string key, FuncDec *func_ref, int type_size = 0);
+    FuncDec *getter(std::string key);
 };

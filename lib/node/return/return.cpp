@@ -7,7 +7,7 @@ Return::Return(std::vector<Node *> children) : children(children)
 {
 }
 
-ValueType Return::Evaluate()
+ValueType Return::Evaluate(SymbolTable *symbolTable)
 {
-    return this->children[0]->Evaluate();
+    return this->children[0]->Evaluate(symbolTable);
 }

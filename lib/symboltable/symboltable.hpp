@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <map>
+#include <vector>
 #include <string>
 #include <variant>
 
@@ -16,12 +17,14 @@ struct TableValue
 class SymbolTable
 {
 protected:
-    static std::shared_ptr<std::map<std::string, TableValue>> table;
+    std::shared_ptr<std::map<std::string, TableValue>> table;
     static int offset;
+    std::vector<std::string> keys;
 
 public:
     SymbolTable();
     void create(std::string key, std::string value_type, int type_size, ValueType value);
     TableValue getter(std::string key);
     void setter(std::string key, ValueType value);
+    std::vector<std::string> getKeys();
 };

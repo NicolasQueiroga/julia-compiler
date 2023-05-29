@@ -20,6 +20,7 @@
 #include <memory>
 #include <vector>
 #include <iostream>
+#include "utils.hpp"
 
 Tokenizer Parser::tokenizer = Tokenizer();
 
@@ -44,7 +45,20 @@ Node *Parser::parseFactor()
     else if (tokenizer.next.type == "IDENTIFIER")
     {
         node = new Identifier(tokenizer.next.value);
+        std::string func_name = std::get<std::string>(tokenizer.next.value);
         tokenizer.selectNext();
+        if (tokenizer.next.type == "LPAREN")
+        {
+            std::vector<Node *> params;
+            while (tokenizer.next.type != "RPAREN")
+            {
+                params.push_back(parseRelExpr());
+                if (tokenizer.next.type == "COMMA" && tokenizer.next.type != "RPAREN")
+                    tokenizer.selectNext();
+            }
+            tokenizer.selectNext();
+            return new FuncCall(func_name, params);
+        }
         return node;
     }
     else if (tokenizer.next.type == "MINUS")
@@ -89,6 +103,10 @@ Node *Parser::parseFactor()
 
             throw "Expected RPAREN";
         }
+    }
+    else if (tokenizer.next.type == "RPAREN")
+    {
+        return new NoOp();
     }
     else
     {
@@ -395,7 +413,6 @@ Node *Parser::parseStatement()
         }
         else if (tokenizer.next.type == "LPAREN")
         {
-            tokenizer.selectNext();
             std::vector<Node *> args;
             while (tokenizer.next.type != "RPAREN")
             {

@@ -9,5 +9,5 @@ private:
 
 public:
     Block(std::vector<Node *> children);
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable=nullptr) override;
 };

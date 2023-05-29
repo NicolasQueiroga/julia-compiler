@@ -1,11 +1,12 @@
 #pragma once
 
 #include "node.hpp"
-#include "functable.hpp"
 
-class FuncDec : public Node, public FuncTable
+class FuncDec : public Node
 {
-private:
+    friend class FuncCall;
+
+protected:
     std::string func_type;
     std::string func_name;
     std::vector<Node *> params;
@@ -13,5 +14,7 @@ private:
 
 public:
     FuncDec(std::string func_type, std::string func_name, std::vector<Node *> params, std::vector<Node *> children);
-    ValueType Evaluate() override;
+    ValueType Evaluate(SymbolTable *symbolTable = nullptr) override;
+    std::vector<Node *> getParams();
+    std::vector<Node *> getChildren();
 };

@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include "parser/parser.hpp"
+#include "symboltable/symboltable.hpp"
 #include "assembler/assembler.hpp"
 
 #define DEBUG
@@ -34,7 +35,10 @@ int main(int argc, char **argv)
     file_contents += '\n';
     Assembler::setHeader();
     Node *tree = Parser::run(file_contents);
-    tree->Evaluate();
+    SymbolTable *st = new SymbolTable();
+    tree->Evaluate(st);
+    delete tree;
+    delete st;
     Assembler::setFooter();
     Assembler::write();
     return 0;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "symboltable.hpp"
+
 #include <variant>
 #include <string>
 #include <vector>
@@ -16,5 +18,5 @@ protected:
 public:
     Node();
     virtual ~Node() = default;
-    virtual ValueType Evaluate() = 0;
+    virtual ValueType Evaluate(SymbolTable *symbolTable=nullptr) = 0;
 };
