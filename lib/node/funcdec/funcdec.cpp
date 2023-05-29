@@ -24,3 +24,8 @@ std::vector<Node *> FuncDec::getChildren()
 {
     return this->children;
 }
+
+std::string FuncDec::getType()
+{
+    return this->func_type;
+}

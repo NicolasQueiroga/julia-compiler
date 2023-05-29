@@ -22,6 +22,11 @@ ValueType FuncCall::Evaluate(SymbolTable *symbolTable)
         localSymbolTable->setter(keys[i], this->children[i]->Evaluate(symbolTable));
 
     ValueType ret = func->getChildren()[1]->Evaluate(localSymbolTable);
+    if ((func->getType() == "Int" && std::holds_alternative<std::string>(ret)) ||
+        (func->getType() == "String" && std::holds_alternative<int>(ret)))
+        throw std::runtime_error("Type mismatch");
+        
+
     delete localSymbolTable;
     return ret;
 }

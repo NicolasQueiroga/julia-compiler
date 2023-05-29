@@ -106,10 +106,6 @@ Node *Parser::parseFactor()
             throw "Expected RPAREN";
         }
     }
-    else if (tokenizer.next.type == "RPAREN")
-    {
-        return new NoOp();
-    }
     else
     {
         for (auto child : children)

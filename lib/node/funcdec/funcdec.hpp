@@ -17,4 +17,5 @@ public:
     ValueType Evaluate(SymbolTable *symbolTable = nullptr) override;
     std::vector<Node *> getParams();
     std::vector<Node *> getChildren();
+    std::string getType();
 };
