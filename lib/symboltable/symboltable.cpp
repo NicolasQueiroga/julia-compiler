@@ -13,11 +13,6 @@ void SymbolTable::create(std::string key, std::string value_type, int type_size,
 {
     if (this->table->find(key) == this->table->end())
     {
-        if (value_type == "Int" && std::holds_alternative<std::string>(value))
-            throw "Error: " + key + " is not an integer.";
-        else if (value_type == "String" && std::holds_alternative<int>(value))
-            throw "Error: " + key + " is not a string.";
-
         SymbolTable::offset += type_size;
         std::string size = std::to_string(SymbolTable::offset);
         TableValue table_value = {value_type, size, value};
