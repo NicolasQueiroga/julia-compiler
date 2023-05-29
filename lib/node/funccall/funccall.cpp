@@ -19,10 +19,9 @@ ValueType FuncCall::Evaluate(SymbolTable *symbolTable)
 
     std::vector<std::string> keys = localSymbolTable->getKeys();
     for (size_t i = 0; i < this->children.size(); i++)
-    {
         localSymbolTable->setter(keys[i], this->children[i]->Evaluate(symbolTable));
-    }
 
-    std::vector<Node *> children = func->getChildren();
-    return func->getChildren()[1]->Evaluate(localSymbolTable);
+    ValueType ret = func->getChildren()[1]->Evaluate(localSymbolTable);
+    delete localSymbolTable;
+    return ret;
 }

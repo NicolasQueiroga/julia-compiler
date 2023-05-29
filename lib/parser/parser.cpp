@@ -47,11 +47,13 @@ Node *Parser::parseFactor()
         node = new Identifier(tokenizer.next.value);
         std::string func_name = std::get<std::string>(tokenizer.next.value);
         tokenizer.selectNext();
+        std::vector<Node *> params;
         if (tokenizer.next.type == "LPAREN")
         {
-            std::vector<Node *> params;
+            tokenizer.selectNext();
             while (tokenizer.next.type != "RPAREN")
             {
+                tokenizer.selectNext();
                 params.push_back(parseRelExpr());
                 if (tokenizer.next.type == "COMMA" && tokenizer.next.type != "RPAREN")
                     tokenizer.selectNext();
@@ -280,19 +282,25 @@ Node *Parser::parseStatement()
                         param_children[0] = new Identifier(tokenizer.next.value);
                         param_identifier = std::get<std::string>(tokenizer.next.value);
                         tokenizer.selectNext();
-                       if (tokenizer.next.type == "DECLARATION")
+                        if (tokenizer.next.type == "DECLARATION")
                         {
                             tokenizer.selectNext();
                             if (tokenizer.next.type == "TYPE")
                             {
                                 param_type = std::get<std::string>(tokenizer.next.value);
                                 tokenizer.selectNext();
+                                if (tokenizer.next.type == "COMMA")
+                                {
+                                    tokenizer.selectNext();
+                                    if (tokenizer.next.type != "IDENTIFIER")
+                                        throw "Expected IDENTIFIER";
+                                }
+                                else if (tokenizer.next.type != "COMMA" && tokenizer.next.type != "RPAREN")
+                                    throw "Expected COMMA or RPAREN";
                             }
-                            if (tokenizer.next.type != "COMMA" && tokenizer.next.type != "RPAREN")
-                                throw "Expected COMMA or RPAREN";   
                         }
+                        params.push_back(new VarDec(param_type, param_identifier, param_children));
                     }
-                    params.push_back(new VarDec(param_type, param_identifier, param_children));
                 }
 
                 std::string func_type;

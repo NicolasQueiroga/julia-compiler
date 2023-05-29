@@ -16,7 +16,7 @@ void Assembler::setFileName(std::string file_name)
 
 void Assembler::setHeader()
 {
-    std::ifstream infile("lib/assembler/include/header.asm");
+    std::ifstream infile("../lib/assembler/include/header.asm");
     if (!infile)
         throw std::runtime_error("Error opening file: lib/assembler/include/header.asm\n");
     
@@ -32,7 +32,7 @@ void Assembler::incrementAsmCode(std::string code)
 
 void Assembler::setFooter()
 {
-    std::ifstream infile("lib/assembler/include/footer.asm");
+    std::ifstream infile("../lib/assembler/include/footer.asm");
     if (!infile)
         throw std::runtime_error("Error opening file: lib/assembler/include/footer.asm\n");
     

@@ -89,7 +89,7 @@ void Tokenizer::selectNext()
         this->next.type = "DECLARATION";
     else if (tokens[this->position] == ".")
         this->next.type = "CONCAT";
-    else if (tokens[this->position] == ".")
+    else if (tokens[this->position] == ",")
         this->next.type = "COMMA";
     else if (std::find(this->reservedWords->begin(), this->reservedWords->end(), tokens[this->position]) != this->reservedWords->end())
     {
